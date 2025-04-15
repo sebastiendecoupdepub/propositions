@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Titre adapté -->
+    <title>Produit - Coup de Pub</title>
+
+    <!-- Polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@400;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome (Minimal use for icons if needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        /* --- Styles Globaux --- */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-size: 9pt; /* Taille base réduite pour tout faire tenir */
+            color: #333;
+            background-color: #fff;
+            line-height: 1.4; /* Ajusté */
+        }
+
+        /* --- Conteneur Principal (Simule la page paysage) --- */
+        .page-container {
+            width: 11in; /* Largeur Lettre US Paysage */
+            height: 8.5in; /* Hauteur Lettre US Paysage */
+            padding: 0.4in; /* Marges */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Empêche le débordement sur écran */
+            margin: 20px auto; /* Centrage pour prévisualisation écran */
+            box-shadow: 0 0 10px rgba(0,0,0,0.2); /* Ombre pour prévisualisation écran */
+            background: white; /* Assure un fond blanc */
+        }
+
+        /* --- En-tête de Page --- */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Logo haut */
+            padding-bottom: 10px; /* Réduit */
+            border-bottom: 2px solid #63735D; /* primary-color */
+            margin-bottom: 15px; /* Réduit */
+            flex-shrink: 0; /* Ne pas rétrécir */
+        }
+        .header-logo img {
+            max-height: 55px; /* Ajusté */
+            width: auto;
+        }
+        .header-title {
+            text-align: right;
+        }
+        .header-title h1 {
+            font-family: 'Oswald', Impact, sans-serif;
+            font-size: 16pt; /* Réduit */
+            color: #323232; /* secondary-color */
+            margin: 0 0 3px 0;
+            font-weight: 600;
+        }
+        .header-title p {
+            font-size: 8pt; /* Réduit */
+            color: #555;
+            margin: 0;
+        }
+
+        /* --- Contenu Principal (Divisé en sections gauche et droite) --- */
+        .main-content {
+            flex-grow: 1; /* Prend l'espace restant */
+            display: flex;
+            flex-direction: row; /* Sections côte à côte */
+            overflow: hidden; /* Empêche le contenu global de déborder */
+            gap: 20px; /* Espace entre section image et section infos */
+        }
+
+        /* --- Section Gauche (Images) --- */
+        .image-section {
+            display: flex;
+            flex-direction: column; /* Empiler les images verticalement */
+            justify-content: space-around; /* Espacer les images */
+            align-items: center; /* Centrer horizontalement */
+            flex: 1; /* Prend la moitié de l'espace */
+            min-height: 0; /* Aide flexbox à gérer le rétrécissement */
+            height: 100%; /* Prend toute la hauteur disponible */
+            overflow: hidden; /* Empêche cette section de déborder */
+            box-sizing: border-box;
+            gap: 10px; /* Espace entre les conteneurs d'images */
+        }
+        .product-image-container {
+            flex: 1; /* Chaque conteneur prend une part égale de la hauteur */
+            width: 100%; /* Prend toute la largeur de image-section */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Empêche l'image de déborder son conteneur */
+            border: 1px solid #f0f0f0; /* Bordure légère optionnelle */
+            box-sizing: border-box;
+            min-height: 0; /* Important pour flex */
+        }
+        .product-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* --- Section Droite (Infos/Prix/Options) --- */
+        .info-section {
+            display: flex;
+            flex-direction: column; /* Empiler les éléments verticalement */
+            gap: 10px; /* Espace entre les éléments d'info */
+            flex: 1; /* Prend l'autre moitié de l'espace */
+            min-height: 0; /* Aide flexbox à gérer le rétrécissement */
+            height: 100%; /* Prend toute la hauteur disponible */
+            overflow: hidden; /* Empêche cette section de déborder */
+            padding-left: 15px; /* Espace par rapport aux images */
+            box-sizing: border-box;
+        }
+
+        /* Styles pour Titre/Numéro/Description (dans la section info) */
+        .product-title {
+            font-family: 'Oswald', Impact, sans-serif;
+            font-weight: 600;
+            font-size: 14pt;
+            color: #323232;
+            margin: 0 0 2px 0;
+            flex-shrink: 0; /* Ne pas rétrécir */
+        }
+        .product-item-number {
+            font-size: 8pt;
+            color: #555;
+            margin-bottom: 5px; /* Réduit */
+            font-weight: 600;
+            flex-shrink: 0; /* Ne pas rétrécir */
+        }
+        .product-description {
+            font-size: 8pt;
+            margin-bottom: 8px; /* Espace réduit après la description */
+            line-height: 1.3;
+            flex-shrink: 1; /* Permet de rétrécir si besoin */
+            overflow-y: auto; /* Scroll si description longue */
+            max-height: 12vh; /* Hauteur max pour la description */
+        }
+
+        /* Tableau de Prix (Styles généraux) */
+        .price-grid {
+            margin: 0;
+            font-size: 8pt;
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            width: 100%; /* Prend la largeur de info-section */
+            page-break-inside: avoid;
+            flex-shrink: 0; /* Ne pas rétrécir le tableau lui-même */
+        }
+        .price-grid thead tr th, .price-grid tbody tr td {
+            border: 1px solid #ccc;
+            padding: 3px 5px; /* Padding légèrement réduit */
+            vertical-align: middle;
+            text-align: center;
+        }
+        .price-qty-row {
+            background-color: #EAEAEA !important;
+            color: #000 !important;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600; font-size: 8pt;
+            text-transform: uppercase;
+            -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        }
+
+        /* Styles spécifiques pour le tableau TRANSPOSE */
+        .price-grid.transposed tbody td:not(:first-child) {
+            font-weight: 600;
+            color: #000;
+            font-size: 8pt; /* Réduit pour tenir */
+            text-align: right; /* Prix alignés à droite */
+            white-space: nowrap;
+            padding-right: 6px; /* Réduit */
+        }
+
+        /* Options et Infos Additionnelles */
+        .options-info-container {
+            flex-grow: 1; /* Prend l'espace vertical restant */
+            overflow-y: auto; /* Scroll si nécessaire */
+            min-height: 0; /* Important pour flex */
+            padding-right: 5px; /* Espace pour la barre de scroll */
+        }
+        .product-options-label {
+            font-weight: 600; color: #323232;
+            margin-bottom: 3px; display: block; font-size: 8pt;
+        }
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 8px; /* Réduit */
+            gap: 3px; /* Réduit */
+        }
+        .size-circle, .color-circle {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 20px; height: 20px; /* Réduit */
+            border-radius: 50%; border: 1px solid #ccc;
+            font-size: 6pt; /* Réduit */
+            font-weight: 600; text-align: center; cursor: default;
+            box-shadow: none; margin: 1px; padding: 0 2px; box-sizing: border-box; /* Réduit */
+        }
+
+        .additional-info { margin-top: 8px; } /* Réduit */
+        .additional-info p {
+            font-size: 7pt; /* Réduit */
+            color: #444;
+            margin-bottom: 3px; /* Réduit */
+            line-height: 1.2; /* Réduit */
+        }
+
+        /* --- Pied de Page --- */
+        .page-footer {
+            border-top: 1px solid #ccc;
+            padding-top: 8px;
+            margin-top: 10px; /* Espace avant le footer */
+            font-size: 7pt;
+            color: #555;
+            text-align: center;
+            flex-shrink: 0; /* Ne pas rétrécir */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-contact span { margin: 0 6px; }
+        .footer-contact i { margin-right: 3px; color: #333;}
+        .footer-disclaimer span { margin-left: 5px; }
+
+        /* --- Styles spécifiques à l'Impression --- */
+        @media print {
+            html, body {
+                font-size: 8pt; /* Peut nécessiter réduction globale */
+                background: #fff !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact; /* Force impression couleurs */
+                print-color-adjust: exact;
+            }
+            @page {
+                size: letter landscape;
+                margin: 0.4in;
+            }
+
+            .page-container {
+                width: 100%; height: 100%;
+                box-shadow: none; margin: 0; padding: 0;
+                overflow: hidden !important;
+            }
+            .main-content {
+                gap: 15px; /* Espace impression */
+                height: calc(100% - 80px); /* Ajuster selon header/footer */
+            }
+            .image-section, .info-section {
+                height: 100% !important; /* Force hauteur */
+                overflow: hidden !important; /* Empêche débordement */
+            }
+            .info-section {
+                padding-left: 10px; /* Espace impression */
+            }
+            .product-description {
+                max-height: 10vh; /* Limite hauteur impression */
+                overflow: hidden !important;
+                text-overflow: ellipsis;
+            }
+            .options-info-container {
+                max-height: 30vh; /* Limite hauteur impression */
+                overflow: hidden !important;
+            }
+
+            /* Cacher éléments non désirés */
+            .print-button-container { display: none !important; }
+
+            /* Assurer impression des couleurs et bordures */
+            .price-qty-row { background-color: #EAEAEA !important; color: #000 !important; }
+            .color-circle { border: 1px solid #999 !important; }
+            .color-circle[data-color="Black"] { background-color: #000000 !important; }
+            .color-circle[data-color="White"] { background-color: #FFFFFF !important; border: 1px solid #999 !important; }
+
+            /* Gestion des coupures et débordement */
+            .page-header, .page-footer, .image-section, .info-section {
+                page-break-inside: avoid;
+            }
+            .price-grid, .additional-info p, .product-title, .product-item-number, .product-description, .options-container {
+                page-break-inside: avoid;
+            }
+            .product-image-container, .product-description, .options-info-container {
+                overflow: hidden !important;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+
+        <!-- En-tête -->
+        <div class="page-header">
+            <div class="header-logo">
+                <!-- Mise à jour de l'URL du logo -->
+                <img src="https://www.coupdepub.ca/files/coudepub_logo_web-a-utiliser-illustrator.svg" alt="Logo Coup de Pub">
+            </div>
+            <div class="header-title">
+                <!-- Remplacer les placeholders client -->
+                <p>Date: <span id="currentDate"></span></p>
+            </div>
+        </div>
+
+        <!-- Contenu Principal -->
+        <div class="main-content">
+
+            <!-- Section Gauche (Images) -->
+            <div class="image-section">
+                <div class="product-image-container">
+                    <!-- URL de l'image principale -->
+                    <img src="{{2.product.pics.1.url}}" alt="Image 1 de {{2.product.prName}}" onerror="this.alt='Image 1 non disponible'; this.src='';">
+                </div>
+            </div>
+
+            <!-- Section Droite (Infos/Prix/Options) -->
+            <div class="info-section">
+                <!-- Titre, Numéro, Description déplacés ici -->
+                <h2 class="product-title">{{2.product.prName}}</h2>
+                <p class="product-item-number"><strong>Numéro d'article:</strong> {{2.product.itemNum}}</p>
+                <div class="product-description">
+                    <p>{{2.product.description}}</p>
+                </div>
+
+                <!-- Tableau de Prix Transposé -->
+                <table class="price-grid transposed">
+                    <thead>
+                        <tr class="price-qty-row">
+                            <th>Quantité</th>
+                            <th>Prix Unitaire<br/>({{2.product.currency}})</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{2.product.qty.1}}</td>
+                            <td>{{2.product.prc.1}} $</td>
+                        </tr>
+                        <tr>
+                            <td>{{2.product.qty.2}}</td>
+                            <td>{{2.product.prc.2}} $</td>
+                        </tr>
+                        <tr>
+                            <td>{{2.product.qty.3}}</td>
+                            <td>{{2.product.prc.3}} $</td>
+                        </tr>
+                        <tr>
+                            <td>{{2.product.qty.4}}</td>
+                            <td>{{2.product.prc.4}} $</td>
+                        </tr>
+                        <tr>
+                            <td>{{2.product.qty.5}}</td>
+                            <td>{{2.product.prc.5}} $</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Fin Tableau de Prix Transposé -->
+
+                <!-- Conteneur pour Options et Infos Additionnelles -->
+                <div class="options-info-container">
+                    <div>
+                        <span class="product-options-label">Options disponibles :</span>
+                        <div class="options-container">
+                            <span class="color-circle" data-color="Black" title="Black"></span>
+                            <span class="color-circle" data-color="White" title="White"></span>
+                            <span class="color-circle" data-color="Blue" title="Blue"></span>
+                            <span class="size-circle" title="Dimensions: {{2.product.dimensions}}">{{2.product.dimensions}}</span>
+                        </div>
+                    </div>
+
+                    <div class="additional-info">
+                        <p><strong>Décoration incluse:</strong> {{2.product.priceIncludes}}</p>
+                        <p><strong>Frais suppl. :</strong>
+                            Setup: {{2.product.setupChg}} {{#if 2.product.setupChgCode}}({{2.product.setupChgCode}}){{/if}}.
+                            Répétition: {{2.product.repeatSetupChg}} {{#if 2.product.repeatSetupChgCode}}({{2.product.repeatSetupChgCode}}){{/if}}.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Pied de Page -->
+        <div class="page-footer">
+            <div class="footer-contact">
+                <span><i class="fa fa-map-marker" aria-hidden="true"></i> 4928, rue Ambroise-Lafortune, Boisbriand, J7H 1S6</span>
+                <span><i class="fa fa-phone" aria-hidden="true"></i> (514) 360-3245</span>
+                <span><i class="fa fa-envelope" aria-hidden="true"></i> info@coupdepub.ca</span>
+            </div>
+            <div class="footer-disclaimer">
+                <span>&copy; <span id="currentYear"></span> Coup de Pub.</span>
+                <span>{{2.product.LegalNote}}</span>
+                <span style="margin-left: 10px;">Les prix et dispo. sont sujets à changement.</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var today = new Date();
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            var formattedDate = today.toLocaleDateString('fr-CA', options);
+
+            var dateSpan = document.getElementById('currentDate');
+            if (dateSpan) { dateSpan.textContent = formattedDate; }
+            var yearSpan = document.getElementById('currentYear');
+            if (yearSpan) { yearSpan.textContent = today.getFullYear(); }
+
+            var colorCircles = document.querySelectorAll('.options-container .color-circle');
+            colorCircles.forEach(function(circle) {
+                var colorName = circle.getAttribute('data-color');
+                if (colorName) {
+                    var style = '';
+                    switch (colorName.toLowerCase()) {
+                        case 'black': style = 'background-color: #000000;'; break;
+                        case 'white': style = 'background-color: #FFFFFF; border: 1px solid #999;'; break;
+                        case 'blue': style = 'background-color: #0000FF;'; break;
+                        case 'red': style = 'background-color: #FF0000;'; break;
+                    }
+                    if (style) { circle.style.cssText += style; }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
