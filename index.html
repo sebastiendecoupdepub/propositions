@@ -1,34 +1,419 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Ma Page avec Iframe</title>
-    <style>
-        /* Optionnel: Style CSS pour l'iframe */
-        iframe {
-            border: none; /* Méthode moderne pour enlever la bordure */
-            width: 100%;  /* Prend toute la largeur disponible */
-            height: 500px; /* Hauteur fixe */
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue Produits Moderne</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Contenu de ma page</h1>
-    <p>Ici, nous allons afficher un contenu externe :</p>
+    <header>
+        <h1>Nos Produits vedettes</h1>
+    </header>
 
-    <iframe
-        src="https://www.wikipedia.org/"
-        width="800"
-        height="600"
-        frameborder="0"
-        scrolling="auto"
-        title="Page d'accueil de Wikipedia intégrée"
-        allowfullscreen>
-            <!-- Texte affiché si le navigateur ne supporte pas les iframes -->
-            Votre navigateur ne supporte pas les iframes.
-    </iframe>
+<style>
+    /* Importation de la police Poppins */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    /* Réinitialisation de base et styles globaux */
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    html {
+        font-size: 16px; /* Base pour REM */
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        background-color: #f8f9fa; /* Couleur de fond douce */
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    
+    /* Header */
+    header {
+        background-color: #ffffff;
+        padding: 1.5rem 2rem;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-bottom: 3px solid #007bff; /* Ligne d'accent */
+    }
+    
+    header h1 {
+        color: #0056b3; /* Bleu un peu plus foncé */
+        font-weight: 700;
+        font-size: 2rem;
+    }
+    
+    /* Contenu principal */
+    main {
+        flex-grow: 1; /* Prend l'espace restant */
+        padding: 2rem 1rem; /* Espace autour de la grille */
+    }
+    
+    /* Grille de produits */
+    .product-grid {
+        display: grid;
+        /* Colonnes réactives: s'adapte au conteneur, minimum 250px, maximum 1 fraction d'espace */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem; /* Espace entre les cartes */
+        max-width: 1400px; /* Limite la largeur max pour les grands écrans */
+        margin: 0 auto; /* Centre la grille */
+    }
+    
+    /* Carte Produit */
+    .product-card {
+        background-color: #ffffff;
+        border-radius: 10px; /* Coins arrondis */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Ombre subtile */
+        overflow: hidden; /* Empêche le contenu de déborder */
+        display: flex;
+        flex-direction: column; /* Empile image et détails */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation douce au survol */
+        text-decoration: none; /* Enlève le soulignement du lien */
+        color: inherit; /* Utilise la couleur de texte par défaut */
+        cursor: pointer;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-8px); /* Soulève légèrement la carte */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Ombre plus prononcée */
+    }
+    
+    /* Image du produit */
+    .product-image {
+        width: 100%;
+        height: 220px; /* Hauteur fixe pour l'image */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff; /* Fond blanc si l'image est transparente */
+        padding: 10px;
+    }
+    
+    .product-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* Ajuste l'image sans la déformer/couper */
+        display: block; /* Enlève l'espace sous l'image */
+    }
+    
+    /* Détails du produit */
+    .product-details {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Permet aux détails de remplir l'espace vertical */
+    }
+    
+    .product-name {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #212529;
+        margin-bottom: 0.5rem;
+        min-height: 3.2em; /* Espace pour environ 2 lignes, évite les sauts de layout */
+        line-height: 1.4;
+    }
+    
+    .item-number,
+    .product-rating { /* J'ai commenté le rating dans le HTML car les données sont étranges (-1, -2) */
+        font-size: 0.85rem;
+        color: #6c757d; /* Gris plus clair */
+        margin-bottom: 0.3rem;
+    }
+    
+    .product-pricing {
+        margin-top: auto; /* Pousse le prix en bas de la carte */
+        padding-top: 0.75rem;
+        border-top: 1px solid #eee; /* Séparateur léger */
+        display: flex;
+        align-items: baseline; /* Aligne les prix sur la ligne de base */
+        gap: 0.5rem; /* Espace entre les prix */
+        flex-wrap: wrap; /* Permet le retour à la ligne si manque de place */
+    }
+    
+    .current-price {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #007bff; /* Bleu vif pour le prix actuel */
+    }
+    
+    .list-price {
+        font-size: 0.9rem;
+        color: #adb5bd; /* Gris très clair */
+        text-decoration: line-through; /* Prix barré */
+    }
+    
+    /* Footer */
+    footer {
+        background-color: #343a40; /* Fond sombre */
+        color: #f8f9fa; /* Texte clair */
+        text-align: center;
+        padding: 1.5rem 1rem;
+        margin-top: 2rem; /* Espace au-dessus du footer */
+    }
+    
+    footer p {
+        font-size: 0.9rem;
+    }
+    
+    /* Media Queries pour la réactivité */
+    @media (max-width: 768px) {
+        header h1 {
+            font-size: 1.8rem;
+        }
+        .product-grid {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Cartes un peu plus petites sur tablette */
+            gap: 1rem;
+        }
+        .product-image {
+            height: 180px;
+        }
+        .product-name {
+            font-size: 1rem;
+            min-height: 3em;
+        }
+        .current-price {
+            font-size: 1.15rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        header h1 {
+            font-size: 1.5rem;
+        }
+        .product-grid {
+            grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+        }
+        main {
+            padding: 1.5rem 0.5rem;
+        }
+         .product-image {
+            height: 200px; /* Un peu plus de hauteur sur mobile */
+        }
+    }
+</style>
 
-    <p>Fin du contenu de ma page.</p>
+
+
+    <main>
+        <div class="product-grid">
+
+            <!-- Début Carte Produit Générée à partir de vos données -->
+            <a href="https://www.coupdepub.ca/p/HGLHO-ZKNMY/evora-325ml-11-fl-oz-cork-base-ceramic-mug" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=67658&P=576713419&I=0&PX=300" alt="Evora 325ml (11 fl oz) Cork Base Ceramic Mug">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">Evora 325ml (11 fl oz) Cork Base Ceramic Mug</h3>
+                    <p class="item-number">#HGLHO-ZKNMY</p>
+                    <!-- <p class="product-rating">Évaluation: 0</p> -->
+                    <div class="product-pricing">
+                        <span class="current-price">$7.60</span>
+                        <span class="list-price">$12.00</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+            <!-- Début Carte Produit -->
+            <a href="https://www.coupdepub.ca/p/GRZRT-ASXZP/classic-4.5-oz-cotton-tote" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=67658&P=583484900&I=0&PX=300" alt="Classic 4.5 oz Cotton Tote">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">Classic 4.5 oz Cotton Tote</h3>
+                    <p class="item-number">#GRZRT-ASXZP</p>
+                    <!-- <p class="product-rating">Évaluation: 0</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$3.23</span>
+                        <span class="list-price">$5.00</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+             <!-- Début Carte Produit -->
+             <a href="https://www.coupdepub.ca/p/EDJMO-SGDLT/2-ply-cocktail-napkin" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=69692&P=794116484&I=0&PX=300" alt="2 Ply Cocktail Napkin">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">2 Ply Cocktail Napkin</h3>
+                    <p class="item-number">#EDJMO-SGDLT</p>
+                    <!-- <p class="product-rating">Évaluation: -1</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$0.18</span>
+                        <span class="list-price">$0.69</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+            <!-- Début Carte Produit -->
+            <a href="https://www.coupdepub.ca/p/GNCVQ-VFXXV/12-oz-oversized-cotton-canvas-tote-bag" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=67658&P=733484656&I=0&PX=300" alt="12 oz Oversized Cotton Canvas Tote Bag">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">12 oz Oversized Cotton Canvas Tote Bag</h3>
+                    <p class="item-number">#GNCVQ-VFXXV</p>
+                    <!-- <p class="product-rating">Évaluation: 0</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$8.28</span>
+                        <span class="list-price">$12.22</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+            <!-- Début Carte Produit -->
+             <a href="https://www.coupdepub.ca/p/FDGHL-WCLSW/recycled-cardboard-notepad" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=67658&P=133485147&I=0&PX=300" alt="Recycled Cardboard Notepad">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">Recycled Cardboard Notepad</h3>
+                    <p class="item-number">#FDGHL-WCLSW</p>
+                    <!-- <p class="product-rating">Évaluation: 0</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$4.47</span>
+                        <span class="list-price">$6.90</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+            <!-- Début Carte Produit -->
+            <a href="https://www.coupdepub.ca/p/FBBYL-YPMRP/kelowna-cardboard-notebook" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=67658&P=974415120&I=0&PX=300" alt="Kelowna Cardboard Notebook">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">Kelowna Cardboard Notebook</h3>
+                    <p class="item-number">#FBBYL-YPMRP</p>
+                    <!-- <p class="product-rating">Évaluation: -1</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$2.92</span>
+                        <span class="list-price">$4.54</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+             <!-- ... Collez ici le reste de vos produits en suivant le même modèle ... -->
+             <!-- J'en ajoute quelques-uns pour l'exemple -->
+
+            <!-- Début Carte Produit -->
+            <a href="https://www.coupdepub.ca/p/FSFZK-SXFMX/unisex-crewneck-t-shirt" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=69565&P=114675088&I=0&PX=300" alt="Unisex crewneck t-shirt">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">Unisex crewneck t-shirt</h3>
+                    <p class="item-number">#FSFZK-SXFMX</p>
+                    <!-- <p class="product-rating">Évaluation: -2</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$21.90</span>
+                        <span class="list-price">$28.50</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+            <!-- Début Carte Produit -->
+            <a href="https://www.coupdepub.ca/p/EBTBS-VSTNQ/pout--pucker-lip-moisturizer" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=67658&P=587796851&I=0&PX=300" alt="Pout & Pucker Lip Moisturizer">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">Pout & Pucker Lip Moisturizer</h3>
+                    <p class="item-number">#EBTBS-VSTNQ</p>
+                    <!-- <p class="product-rating">Évaluation: 0</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$2.72</span>
+                        <span class="list-price">$4.18</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+            <!-- Début Carte Produit -->
+             <a href="https://www.coupdepub.ca/p/CXPFS-AFNVV/9-flying-saucer-4-color" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=69430&P=365638806&I=0&PX=300" alt="9'' Flying Saucer (4-Color)">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">9'' Flying Saucer (4-Color)</h3>
+                    <p class="item-number">#CXPFS-AFNVV</p>
+                    <!-- <p class="product-rating">Évaluation: 0</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$2.95</span>
+                        <span class="list-price">$3.79</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+            <!-- Début Carte Produit (Exemple avec un seul prix) -->
+            <a href="https://www.coupdepub.ca/p/BQYBS-VFBNP/stormtech-mens-sonora-h2x-dry-ss-polo" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=67450&P=768079850&I=0&PX=300" alt="Stormtech Men's Sonora H2X-DRY S/S Polo">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">Stormtech Men's Sonora H2X-DRY S/S Polo</h3>
+                    <p class="item-number">#BQYBS-VFBNP</p>
+                    <!-- <p class="product-rating">Évaluation: 0</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">$45.00</span>
+                        <!-- Pas de list-price ici -->
+                    </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+             <!-- Début Carte Produit (Exemple sans prix visible dans vos données initiales) -->
+             <a href="https://www.coupdepub.ca/p/DNYYS-TWTGP/mens-king-pin-bowling-shirt" class="product-card" target="_blank" rel="noopener noreferrer">
+                <div class="product-image">
+                    <img src="https://www.promoplace.com/ws/ws.dll/QPic?SN=69561&P=335947870&I=0&PX=300" alt="Men's King-Pin Bowling Shirt">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">Men's King-Pin Bowling Shirt</h3>
+                    <p class="item-number">#DNYYS-TWTGP</p>
+                    <!-- <p class="product-rating">Évaluation: 0</p> -->
+                     <div class="product-pricing">
+                        <span class="current-price">Prix sur demande</span>
+                     </div>
+                </div>
+            </a>
+            <!-- Fin Carte Produit -->
+
+
+            <!-- ================================================== -->
+            <!-- !!! AJOUTEZ LE RESTE DE VOS PRODUITS ICI !!!      -->
+            <!-- Copiez/collez le bloc <a class="product-card">...</a> -->
+            <!-- et remplacez les valeurs pour chaque produit.     -->
+            <!-- ================================================== -->
+
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2023 Votre Nom/Entreprise. Tous droits réservés.</p>
+    </footer>
 
 </body>
 </html>
