@@ -1,0 +1,1095 @@
+<!--
+    Coup de Pub - Template Présentation Personnalisée
+    Version: 1.1 (Templated)
+    Date: 2023-10-27
+    Auteur: Coup de Pub
+    Description: Template pour générer des présentations de soumission client.
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Adaptez le titre pour chaque soumission -->
+    <title>Présentation Personnalisée pour {{nom_compagnie_client}} - Coup de Pub</title>
+
+    <!-- Polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@400;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap CSS (3.4.1) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome (4.7.0) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        /* --- Variables CSS --- */
+        /* Variables supprimées car remplacées par leurs valeurs littérales ci-dessous */
+
+        /* --- Styles Globaux --- */
+        body {
+            font-family: 'Open Sans', Arial, sans-serif; /* COMPAT: Police secours */
+            font-size: 16px; /* --base-font-size */
+            font-weight: 400;
+            color: #495057; /* --text-color */
+            line-height: 1.7;
+            background-image: url(https://www.coupdepub.ca/files/background-moka.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container { max-width: 1300px; }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Oswald', Impact, Charcoal, sans-serif; /* COMPAT: Police secours */
+            color: #343A40; /* --heading-color */
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        h1 { font-size: 2.8em; } h2 { font-size: 2.2em; margin-bottom: 35px; }
+        h3 { font-size: 1.6em; margin-bottom: 25px; }
+        h4 { font-size: 1.2em; font-family: 'Poppins', Arial, sans-serif; font-weight: 600; } /* --font-primary */
+
+        p { margin-bottom: 18px; }
+        a {
+            color: #63735D; /* --primary-color */
+            -webkit-transition: color 0.3s ease; /* --transition-speed */
+            -moz-transition: color 0.3s ease;
+            -o-transition: color 0.3s ease;
+            transition: color 0.3s ease;
+        }
+        a:hover, a:focus { color: #323232; text-decoration: none; } /* --secondary-color */
+
+        /* --- Structure Sections --- */
+        .page-section { padding: 70px 0; }
+        .page-section.bg-light {
+             background-color: rgb(83 78 71 / 45%);
+             background-color: rgba(83, 78, 71, 0.45);
+             border-top: 1px solid #E0E0E0; /* --light-gray-border */
+             border-bottom: 1px solid #E0E0E0; /* --light-gray-border */
+        }
+         .page-section.bg-primary {
+            background-color: #63735D; /* --primary-color */
+            color: #FFFFFF; /* --white-color */
+         }
+         .page-section.bg-primary h2, .page-section.bg-primary h3, .page-section.bg-primary p {
+            color: #FFFFFF; /* --white-color */
+         }
+         .page-section.bg-secondary {
+            background-color: #323232; /* --secondary-color */
+            color: #f5f5f5; /* --light-gray */
+         }
+         .page-section.bg-secondary h2, .page-section.bg-secondary h3 {
+             color: #FFFFFF; /* --white-color */
+         }
+
+        /* --- I. En-tête --- */
+        #en-tete {
+            background-color: #323232;
+            border-bottom: 1px solid #63735D; /* --primary-color */
+            box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+            padding: 0px 0;
+            position: sticky;
+            position: -webkit-sticky;
+            top: 0;
+            z-index: 999; margin-bottom: 0;
+        }
+        #en-tete .navbar-brand img { max-height: 125px; width: auto; }
+        #en-tete .navbar-brand {
+             font-family: 'Oswald', Impact, sans-serif;
+             font-weight: 600; font-size: 1.8em; color: #ffffff !important;
+             height: auto; padding: 0px;
+             display: -webkit-box; display: -ms-flexbox; display: flex;
+             -webkit-box-align: center; -ms-flex-align: center; align-items: center;
+        }
+        #en-tete .navbar-nav > li > a {
+            font-family: 'Open Sans', Arial, sans-serif; /* --font-secondary */
+            font-weight: 600; text-transform: uppercase; font-size: 1em;
+            color: #ffffff !important;
+            padding-top: 28px; padding-bottom: 28px;
+            -webkit-transition: color 0.3s ease; /* --transition-speed */
+            transition: color 0.3s ease;
+        }
+        #en-tete .navbar-nav > li > a:hover,
+        #en-tete .navbar-nav > li.active > a {
+            color: #82977b !important; /* Slightly lighter than primary for hover */
+            background-color: transparent !important;
+        }
+         #en-tete .navbar-toggle { border-color: #ddd; }
+         #en-tete .navbar-toggle .icon-bar { background-color: #ccc; }
+         #en-tete .navbar-toggle:hover, #en-tete .navbar-toggle:focus { background-color: #444; }
+
+
+        /* --- II. Section d’Introduction / Accueil --- */
+        #accueil { padding-top: 50px; padding-bottom: 50px; }
+        #accueil .slogan { font-family: 'Poppins', Arial, sans-serif; font-size: 2.8em; font-weight: 700; color: #323232; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); } /* --font-primary, --secondary-color */
+        #accueil .presentation-rapide { font-size: 1.2em; color: #495057; margin-bottom: 40px; max-width: 750px; margin-left: auto; margin-right: auto; } /* --text-color */
+        .client-intro-box {
+            background-color: white;
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 35px;
+            border-radius: 8px; /* --border-radius */
+            border: 1px solid #E0E0E0; /* --light-gray-border */
+            margin-top: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* --box-shadow */
+        }
+        .client-intro-box h3 {
+            font-family: 'Oswald', Impact, sans-serif;
+            font-size: 1.8em; margin-top: 0;
+            border-bottom: 3px solid #63735D; /* --primary-color */
+            padding-bottom: 12px; display: inline-block; margin-bottom: 30px;
+            color: #323232; /* --secondary-color */
+        }
+        ul.client-info { padding: 0; list-style-type: none; font-size: 1em; margin-bottom: 15px; }
+        ul.client-info li { margin-bottom: 8px; }
+        ul.client-info strong { color: #323232; font-weight: 600; } /* --secondary-color */
+        #header-text { margin: 25px 0 0 0; }
+        #header-text h4 { font-family: 'Poppins', Arial, sans-serif; font-size: 1.4em; font-weight: 600; color: #323232; margin-bottom: 10px;} /* --font-primary, --secondary-color */
+        #header-text p { font-size: 1.05em; }
+
+        /* --- III. À propos / Qui sommes-nous --- */
+        /* NOTE: Cette section est conservée pour le contexte, mais vous pouvez la supprimer si non désirée pour une soumission */
+
+        /* --- IV. Nos Services / Offres (Section Produits) --- */
+        #produits h2 { margin-bottom: 50px; font-size: 2.5em; }
+
+        /* --- Styles Produit --- */
+        .product {
+            background-color: rgba(255, 255, 255, 0.8); /* Fallback */
+            -webkit-backdrop-filter: blur(15px) brightness(0.9);
+            backdrop-filter: blur(15px) brightness(0.9);
+            border-radius: 8px; /* --border-radius */
+            padding: 35px;
+            margin-bottom: 90px;
+            border: 1px solid #E0E0E0; /* --light-gray-border */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* --box-shadow */
+            -webkit-transition: -webkit-transform 0.3s ease, box-shadow 0.3s ease; /* --transition-speed */
+            transition: -webkit-transform 0.3s ease, box-shadow 0.3s ease;
+            -o-transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, -webkit-transform 0.3s ease;
+            opacity: 1; -webkit-transform: none; transform: none; -webkit-animation: none; animation: none;
+            position: relative; overflow: hidden;
+        }
+        .product:hover {
+            -webkit-transform: translateY(-8px);
+                    transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.20); /* --box-shadow-hover */
+        }
+
+        /* Image Principal + Galerie */
+        .product .col-sm-7 {
+             display: -webkit-box; display: -ms-flexbox; display: flex;
+             -webkit-box-orient: vertical;
+             -webkit-box-direction: normal;
+                 -ms-flex-direction: column;
+                     flex-direction: column;
+             -webkit-box-align: center;
+                 -ms-flex-align: center;
+                     align-items: center;
+         }
+        .product-image-container {
+            width: 100%;
+            position: relative;
+            padding-bottom: 100%; /* 1:1 ratio hack */
+            margin-bottom: 20px;
+            overflow: hidden; border-radius: 8px; /* --border-radius */
+            cursor: pointer;
+            background-color: #F8F9FA; /* --light-bg */
+            border: 1px solid #E0E0E0; /* --light-gray-border */
+        }
+        .main-product-image-bg {
+             position: absolute;
+             top: 0; left: 0; right: 0; bottom: 0;
+             background-size: cover; /* Replaces object-fit */
+             background-position: center center; /* Replaces object-fit */
+             background-repeat: no-repeat;
+             -webkit-transition: -webkit-transform 0.4s ease;
+             transition: -webkit-transform 0.4s ease;
+             -o-transition: transform 0.4s ease;
+             transition: transform 0.4s ease;
+             transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+        }
+        .product-image-container:hover .main-product-image-bg {
+            -webkit-transform: scale(1.08);
+                    transform: scale(1.08);
+        }
+
+        /* Galerie */
+        .gallery { width: 100%; max-width: 300px; margin-top: 15px; }
+        .gallery .row {
+             display: -webkit-box; display: -ms-flexbox; display: flex;
+             -ms-flex-wrap: wrap;
+                 flex-wrap: wrap;
+             -webkit-box-pack: center;
+                 -ms-flex-pack: center;
+                     justify-content: center;
+         }
+        .thumbnail-container {
+            padding: 0; width: 65px; height: 65px;
+            border: 2px solid #E0E0E0; /* --light-gray-border */
+            border-radius: 6px; overflow: hidden; cursor: pointer;
+            -webkit-transition: border-color 0.3s ease, opacity 0.3s ease, -webkit-transform 0.3s ease; /* --transition-speed */
+            transition: border-color 0.3s ease, opacity 0.3s ease, -webkit-transform 0.3s ease;
+            -o-transition: border-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+            transition: border-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+            transition: border-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
+            opacity: 0.8;
+            margin: 6px;
+            background-size: cover; /* Replaces object-fit */
+            background-position: center center; /* Replaces object-fit */
+            background-repeat: no-repeat;
+            background-color: #F8F9FA; /* --light-bg */
+        }
+        .thumbnail-container:hover {
+             border-color: #63735D; /* --primary-color */
+             opacity: 1;
+             -webkit-transform: scale(1.05);
+                     transform: scale(1.05);
+        }
+        .thumbnail-container.active {
+             border-color: #63735D; /* --primary-color */
+             opacity: 1;
+             box-shadow: 0 0 8px rgba(99, 115, 93, 0.5); /* --primary-color derived */
+        }
+
+        /* Contenu Texte Produit */
+        .product .title {
+            font-family: 'Oswald', Impact, sans-serif;
+            font-weight: 600; font-size: 1.8em;
+            color: #323232; /* --secondary-color */
+            padding: 0 0 12px 0; margin: 0 0 18px 0;
+            border-bottom: 2px solid #63735D; /* --primary-color */
+            -webkit-transition: color 0.3s ease; /* --transition-speed */
+            transition: color 0.3s ease;
+        }
+        .product .item { font-size: 0.95em; color: #555; margin-bottom: 15px; } /* --text-medium */
+        .product .description { margin-bottom: 25px; font-size: 1em; color: #495057; } /* --text-color */
+        .product .additional { margin-bottom: 12px; font-size: 0.95em; color: #495057; } /* --text-color */
+        .product .additional strong { color: #343A40; font-weight: 600; } /* --heading-color */
+
+        /* Tableau de Prix */
+        .price-grid {
+            margin: 25px 0; font-size: 0.95em;
+            border: 1px solid #E0E0E0; /* --light-gray-border */
+            border-radius: 8px; /* --border-radius */
+            overflow: hidden; width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Lighter shadow */
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .price-grid thead tr th, .price-grid tbody tr td {
+             border-bottom: 1px solid #E0E0E0; /* --light-gray-border */
+             border-right: 1px solid #E0E0E0; /* --light-gray-border */
+             padding: 12px 15px;
+             vertical-align: middle;
+             text-align: center;
+        }
+        .price-grid thead tr th:last-child, .price-grid tbody tr td:last-child {
+            border-right: none;
+        }
+        .price-grid tbody tr:last-child td { border-bottom: none; }
+
+        .price-qty-row {
+            background-color: #63735D; /* --primary-color */
+            color: #FFFFFF; /* --white-color */
+            font-family: 'Poppins', Arial, sans-serif; /* --font-primary */
+            font-weight: 500; font-size: 0.9em;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .price-qty-row th { border-color: #323232 !important; } /* --secondary-color */
+        .price-grid tbody td:first-child {
+            font-weight: 600; color: #343A40; /* --heading-color */
+            text-align: left;
+        }
+        .price-grid tbody td:not(:first-child) {
+            font-weight: 700;
+            color: #323232; /* --secondary-color (was --price-color) */
+            font-size: 1.2em;
+        }
+        .nowrap { white-space: nowrap; } /* Helper class for price label */
+
+        /* --- VI. Témoignages et Références --- */
+        /* NOTE: Conservé mais caché par défaut pour une soumission standard. Décommentez si besoin. */
+        /*
+        #temoignages h2 { color: #323232; }
+        #temoignages .quote { font-style: italic; font-size: 1.15em; color: #495057; margin-bottom: 15px; border-left: 4px solid #63735D; padding-left: 20px; }
+        #temoignages cite { font-weight: 600; color: #323232; font-family: 'Poppins', Arial, sans-serif; }
+        #temoignages .client-logos { margin-top: 50px; }
+        #temoignages .client-logos h4 { font-family: 'Poppins', Arial, sans-serif; color: #6C757D; font-size: 1.1em; margin-bottom: 25px; }
+        #temoignages .client-logos img { max-height: 65px; width: auto; margin: 10px 20px; filter: grayscale(100%) opacity(0.6); transition: filter 0.3s ease, opacity 0.3s ease; }
+        #temoignages .client-logos img:hover { filter: grayscale(0%) opacity(1); }
+        */
+
+        /* --- VII. Processus de Travail --- */
+        /* NOTE: Conservé mais caché par défaut pour une soumission standard. Décommentez si besoin. */
+        /*
+        #processus h2 { color: #323232; }
+        #processus .step { text-align: center; padding: 20px; margin-bottom: 20px; }
+        #processus .step-content-box { background-color: rgba(255, 255, 255, 0.9); border: 1px solid #E0E0E0; border-radius: 8px; padding: 30px 25px; text-align: center; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        #processus .step-content-box:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.20); }
+        #processus .step-content-box i { font-size: 3em; color: #63735D; margin-bottom: 20px; display: block; }
+        #processus .step-title { font-family: 'Poppins', Arial, sans-serif; font-size: 1.2em; font-weight: 600; color: #323232; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        #processus .step-description { font-size: 0.95em; color: #495057; line-height: 1.6; }
+        */
+
+        /* --- VIII. Section Contact / Appel à l’Action --- */
+        #contact h2 { color: #FFFFFF; } /* --white-color */
+        .closing-message > div { /* Style pour la boîte de message générée par JS si utilisée */
+            background-color: #fff9e6;
+            background-color: rgba(253, 248, 228, 0.9);
+            border-left: 5px solid #63735D; /* --primary-color */
+            padding: 25px; margin-bottom: 30px;
+            border-radius: 8px; /* --border-radius */
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            min-height: 10px;
+        }
+        .contact-info { margin-bottom: 40px; }
+        .contact-info p { margin-bottom: 12px; font-size: 1.15em; color: #FFFFFF; } /* --white-color */
+        .contact-info p i { color: #63735D; margin-right: 10px; width: 20px; text-align: center; } /* --primary-color */
+        .contact-info strong { color: #323232; font-weight: 600; } /* --secondary-color */
+        .contact-info a { color: #FFFFFF; } /* --white-color */
+        .contact-info a:hover { color: #eee; }
+
+        .social-icons { margin-top: 20px; }
+        .social-icons a {
+             display: -webkit-inline-box; display: -ms-inline-flexbox; display: inline-flex;
+             -webkit-box-align: center; -ms-flex-align: center; align-items: center;
+             -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;
+             width: 45px; height: 45px; margin: 0 8px; border-radius: 50%;
+             background-color: gray;
+             background-color: rgba(255, 255, 255, 0.15);
+             color: #FFFFFF; font-size: 1.5em; /* --white-color */
+             -webkit-transition: -webkit-transform 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* --transition-speed */
+             transition: -webkit-transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+             -o-transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+             transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+             transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, -webkit-transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            -webkit-transform: translateY(-3px) scale(1.05);
+                    transform: translateY(-3px) scale(1.05);
+            background-color: #63735D; /* --primary-color */
+            color: #FFFFFF; /* --white-color */
+        }
+
+        /* Termes et Conditions */
+        .well.terms {
+            background-color: #f5f8fa;
+            background-color: rgba(238, 242, 247, 0.8);
+            border: 1px solid #E0E0E0; /* --light-gray-border */
+            padding: 25px; font-size: 0.9em; color: #6C757D; /* --text-light */
+            border-radius: 8px; margin-top: 40px; /* --border-radius */
+        }
+        .well.terms strong, .well.terms strong u { color: #323232; } /* --secondary-color */
+        .well.terms hr { border-top: 1px solid #E0E0E0; } /* --light-gray-border */
+
+
+        /* --- X. Pied de page --- */
+        .footer.cdp-footer {
+            background-color: #323232; /* --secondary-color */
+            color: #BDC3C7;
+            padding: 60px 1rem 30px 1rem;
+            font-family: 'Poppins', Arial, sans-serif; /* --font-primary */
+            font-size: 1.1rem; /* Augmenté de 1rem */
+            line-height: 1.7;
+            border-top: 4px solid #63735D; /* --primary-color */
+            margin-top: 0;
+            margin: 0 auto;
+        }
+        .cdp-footer-container {
+            max-width: 1200px; margin: 0 auto;
+            display: -webkit-box; display: -ms-flexbox; display: flex;
+            -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+
+
+            margin: 0 auto;
+
+        }
+        .cdp-footer-section {
+            margin-bottom: 2.5rem;
+            -webkit-box-flex: 1;
+                -ms-flex: 1 1 250px;
+                    flex: 1 1 250px;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            min-width: 230px;
+        }
+
+        .cdp-footer-heading {
+            color: #FFFFFF; /* --white-color */
+            font-family: 'Oswald', Impact, sans-serif;
+            font-size: 1.2em; font-weight: 600; margin-bottom: 25px; position: relative;
+            padding-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .cdp-footer-heading::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 50px; height: 3px; background-color: #63735D; /* --primary-color */
+            border-radius: 2px;
+            -webkit-transition: width 0.3s ease; /* --transition-speed */
+            -o-transition: width 0.3s ease;
+            transition: width 0.3s ease;
+        }
+        .cdp-about-section p { margin-bottom: 1.5rem; font-size: 1em; color: #BDC3C7; }
+        .cdp-footer-logo { max-width: 150px; height: auto; opacity: 0.9;
+            -webkit-transition: opacity 0.3s ease; /* --transition-speed */
+            -o-transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease; margin-top: 10px;}
+        .cdp-footer-logo:hover { opacity: 1; }
+        .cdp-footer-links { list-style: none; padding-left: 0; margin: 0; }
+        .cdp-footer-links li { margin-bottom: 12px; }
+        .cdp-footer-links li a {
+            color: #BDC3C7; text-decoration: none;
+            -webkit-transition: color 0.3s ease, padding-left 0.3s ease; /* --transition-speed */
+            -o-transition: color 0.3s ease, padding-left 0.3s ease;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+            position: relative; padding-left: 0; display: inline-block;
+            font-size: 1.1em; /* Ajusté si nécessaire pour correspondre à l'augmentation générale */
+        }
+        .cdp-footer-links li a:hover { color: #FFFFFF; padding-left: 12px; } /* --white-color */
+        .cdp-footer-links li a::before {
+            content: '\\f054';
+            font-family: 'FontAwesome';
+            position: absolute; left: 0; top: 50%;
+            -webkit-transform: translateY(-50%); transform: translateY(-50%);
+            opacity: 0; color: #63735D; /* --primary-color */
+            -webkit-transition: opacity 0.3s ease; -o-transition: opacity 0.3s ease; transition: opacity 0.3s ease; /* --transition-speed */
+            font-size: 0.8em;
+        }
+        .cdp-footer-links li a:hover::before { opacity: 1; }
+        .cdp-footer-address { font-style: normal; font-size: 1.1em; /* Ajusté si nécessaire */ }
+        .cdp-footer-address p {
+             margin-bottom: 15px; color: #BDC3C7;
+             display: -webkit-box; display: -ms-flexbox; display: flex;
+             -webkit-box-align: start; -ms-flex-align: start; align-items: flex-start;
+         }
+        .cdp-footer-address p i {
+            color: #63735D; margin-top: 4px; /* --primary-color */
+            -ms-flex-negative: 0; flex-shrink: 0;
+            width: 20px; text-align: center; font-size: 1.1em;
+            margin-right: 12px;
+        }
+        .cdp-footer-address a { color: inherit; text-decoration: none;
+            -webkit-transition: color 0.3s ease; /* --transition-speed */
+            -o-transition: color 0.3s ease;
+            transition: color 0.3s ease; }
+        .cdp-footer-address a:hover { color: #FFFFFF; } /* --white-color */
+        .cdp-footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 30px; margin-top: 30px; text-align: center;
+            width: 100%;
+            -ms-flex-preferred-size: 100%; flex-basis: 100%;
+        }
+        .cdp-copyright { font-size: 1.05em; color: #95a5a6; margin-bottom: 10px; /* Ajusté si nécessaire */ }
+        .cdp-footer-disclaimer { font-size: 0.95em; color: #7f8c8d; /* Ajusté si nécessaire */ }
+
+        /* --- Styles for Response Section --- */
+        /* Response buttons removed, only message and email link kept */
+        #responseMessage {
+            margin-top: 10px; margin-bottom: 20px;
+            border-radius: 8px; /* --border-radius */
+        }
+        #sendEmailBtn {
+            -webkit-transition: background-color 0.3s ease, border-color 0.3s ease; /* --transition-speed */
+            -o-transition: background-color 0.3s ease, border-color 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        #sendEmailBtn:hover {
+             background-color: #505f4c !important; /* Darker shade of primary */
+             border-color: #505f4c !important;
+        }
+
+        /* --- Styles for Size & Color Circles --- */
+        .product-options-label {
+            font-weight: 600; color: #323232; /* --secondary-color */
+            margin-bottom: 8px; display: block; font-size: 0.95em;
+        }
+        .options-container {
+            display: -webkit-box; display: -ms-flexbox; display: flex;
+            -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .size-circle, .color-circle {
+             display: -webkit-inline-box; display: -ms-inline-flexbox; display: inline-flex;
+             -webkit-box-align: center; -ms-flex-align: center; align-items: center;
+             -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;
+             min-width: 32px; height: 32px; border-radius: 50%;
+             border: 1px solid #E0E0E0; /* --light-gray-border */
+             font-size: 0.8em; font-weight: 600; text-align: center;
+             cursor: default;
+             -webkit-transition: -webkit-transform 0.2s ease;
+             transition: -webkit-transform 0.2s ease;
+             -o-transition: transform 0.2s ease;
+             transition: transform 0.2s ease;
+             transition: transform 0.2s ease, -webkit-transform 0.2s ease;
+             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+             margin: 4px; padding: 0 5px; /* Added padding for size labels */
+             box-sizing: border-box;
+        }
+        .size-circle { background-color: #FFFFFF; color: #323232; } /* --white-color, --secondary-color */
+        .color-circle { border-color: rgba(0,0,0,0.2); line-height: 30px; /* Vert alignement texte si besoin */}
+
+        /* --- Styles for New Footer Social Icons --- */
+        .cdp-social-icons {
+            display: -webkit-box; display: -ms-flexbox; display: flex;
+            -webkit-box-align: center; -ms-flex-align: center; align-items: center;
+            margin-top: 15px;
+            -webkit-box-pack: start; -ms-flex-pack: start; justify-content: flex-start;
+        }
+        .cdp-social-icons a {
+            display: inline-block; line-height: 0;
+            margin-right: 15px;
+        }
+         .cdp-social-icons a:last-child { margin-right: 0; }
+
+        .cdp-social-icons img {
+            width: 32px; height: 32px;
+            object-fit: contain; /* Fallback: SVG should scale well */
+            -webkit-transition: -webkit-transform 0.2s ease;
+            transition: -webkit-transform 0.2s ease;
+            -o-transition: transform 0.2s ease;
+            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, -webkit-transform 0.2s ease;
+        }
+        .cdp-social-icons a:hover img {
+            -webkit-transform: scale(1.1);
+                    transform: scale(1.1);
+        }
+
+        /* --- Styles for Newsletter Form --- */
+        .cdp-newsletter-form {
+             display: -webkit-box; display: -ms-flexbox; display: flex;
+             max-width: 400px; margin-top: 15px; margin-bottom: 20px;
+        }
+        .newsletter-input {
+            -webkit-box-flex: 1; -ms-flex-positive: 1; flex-grow: 1;
+            padding: 10px 15px; border: 1px solid #ccc;
+            border-radius: 8px 0 0 8px; /* --border-radius */
+            font-size: 0.95em;
+            box-sizing: border-box;
+        }
+        .newsletter-button {
+            padding: 10px 15px;
+            border: 1px solid #63735D; /* --primary-color */
+            background-color: #63735D; /* --primary-color */
+            color: white;
+            border-radius: 0 8px 8px 0; /* --border-radius */
+            cursor: pointer;
+            -webkit-transition: background-color 0.3s ease; /* --transition-speed */
+            -o-transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease;
+             display: inline-block; vertical-align: top;
+        }
+        .newsletter-button:hover {
+            background-color: #323232; /* --secondary-color */
+            border-color: #323232; /* --secondary-color */
+        }
+        .cdp-footer-subheading {
+            margin-top: 25px; margin-bottom: 10px; color: #BDC3C7;
+            font-size: 1em; font-weight: 600; text-align: left;
+        }
+        .cdp-footer-address p i.fas,
+        .cdp-footer-address p i.fa {
+             width: 20px; text-align: center;
+        }
+
+        /* --- Utilitaires & Responsive --- */
+        .clearfix::after { content: ""; clear: both; display: table; }
+        .keeptogether { page-break-inside: avoid; } /* Suggestion for print */
+        @media (max-width: 991px) {
+             ul.client-info.first { border-right: 0; } ul.client-info.last { padding-left: 0; }
+             .cdp-footer-container { -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; text-align: center; }
+             .cdp-footer-section { min-width: 80%; text-align: center; }
+             .cdp-footer-heading::after { left: 50%; -webkit-transform: translateX(-50%); transform: translateX(-50%); }
+             .cdp-footer-address p { -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; }
+             .cdp-social-icons { -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; }
+             .cdp-newsletter-form { margin-left: auto; margin-right: auto; }
+        }
+        @media (max-width: 767px) {
+            body { font-size: 15px; }
+            h1 { font-size: 2.2em; } h2 { font-size: 1.8em; } h3 { font-size: 1.4em; }
+            .page-section { padding: 50px 0; }
+            .product { padding: 25px; }
+            .product .col-sm-7, .product .col-sm-5 { width: 100%; padding: 0; }
+            .product .col-sm-7 { margin-bottom: 25px; }
+            .product .title { font-size: 1.6em; }
+            .product-image-container { max-width: 90%; padding-bottom: 90%; margin-left: auto; margin-right: auto; }
+            .cdp-footer-container { text-align: center; }
+            .cdp-footer-links li a:hover { padding-left: 0; }
+            .cdp-footer-links li a::before { display: none; }
+            .social-icons a { width: 40px; height: 40px; font-size: 1.3em; }
+            .footer.cdp-footer { padding: 40px 1rem 25px 1rem; }
+            /* #processus .step-content-box { min-height: auto; padding: 20px; } */ /* Uncomment if using Processus */
+            .response-options .response-btn { margin: 0 10px; }
+            .cdp-footer-section { min-width: 90%; }
+        }
+
+        /* --- Print Styles --- */
+        @media print {
+            body { background: #fff !important; font-size: 10pt; color: #000; }
+            a { color: #000 !important; text-decoration: none !important; }
+            a[href]:after { content: none !important; }
+            /* Hide elements not needed for print */
+            #en-tete, #pied-de-page, #suggestions, #temoignages, #processus, #a-propos .text-center img, /* Keep text in A Propos */
+            .gallery, .lightbox, .close, .social-icons, .cdp-footer, #reponse-presentation, #newsletterForm, .cdp-social-icons,
+            .response-options, #sendEmailBtn, #representativeSelect, .cdp-footer-bottom .cdp-footer-disclaimer,
+            .product-image-container:hover .main-product-image-bg, /* Disable hover zoom */
+            .print-button-container /* Cacher le bouton d'impression */
+            { display: none !important; }
+
+            .page-section { padding: 10px 0 !important; background: none !important; border: none !important; }
+            #accueil { padding-top: 10px !important; } /* Reduce top padding for accueil */
+            .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            .row { margin-left: 0; margin-right: 0; }
+            /* Bootstrap columns for print */
+            .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 { float: left; position: relative; min-height: 1px; padding-left: 5px; padding-right: 5px; box-sizing: border-box; }
+            .col-sm-5 { width: 41.666%; } .col-sm-7 { width: 58.333%; } /* Adjust col classes */
+            .client-intro-box { border: 1px solid #ccc !important; box-shadow: none !important; padding: 15px !important; margin-top: 10px !important; background: #fff !important; }
+            .product { box-shadow: none !important; border: 1px solid #ccc !important; padding: 10px !important; margin-bottom: 15px !important; page-break-inside: avoid !important; border-radius: 0 !important; background: #fff !important; }
+            .product-image-container { width: 100px !important; height: 100px !important; padding-bottom: 0 !important; position: relative !important; background-color: #eee !important; border: 1px solid #ccc !important; float: left; margin-right: 10px; margin-bottom: 5px;}
+            .main-product-image-bg { background-size: contain !important; background-position: center !important; position: absolute; top:0; left:0; right:0; bottom:0; } /* Print background */
+            .product .col-sm-7 { width: 30% !important; /* Adjust image column width for print */ }
+            .product .col-sm-5 { width: 70% !important; /* Adjust text column width for print */ }
+            .product .title { font-size: 12pt !important; border: none !important; padding-bottom: 5px !important; color: #000 !important; margin-bottom: 5px !important; }
+            .product p { font-size: 9pt !important; color: #000 !important; margin-bottom: 5px; }
+            .options-container { margin-bottom: 5px !important; }
+            .size-circle, .color-circle { width: 18px !important; height: 18px !important; font-size: 7pt !important; margin: 2px !important; }
+            .price-grid { font-size: 8pt !important; margin: 10px 0 !important; border: 1px solid #ccc !important; width: 100%; }
+            .price-grid th, .price-grid td { padding: 4px !important; border: 1px solid #ccc !important; color: #000 !important; text-align: left; }
+            .price-grid td:not(:first-child) { text-align: right; }
+            .price-qty-row { background: #eee !important; color: #000 !important; font-weight: bold; }
+            .price-grid tbody tr { display: table-row !important; page-break-inside: avoid; }
+            .well.terms { border: 1px solid #ccc; background: #eee; padding: 10px; font-size: 9pt; color: #000 !important; }
+            .pagebreak { page-break-before: always !important; display: block; height: 0; line-height: 0; } /* Utility for page breaks */
+        }
+
+        /* --- Lightbox Styles --- */
+        /* NOTE: Kept for image enlargement, but using window.open() now. Can be removed if not planning to revert. */
+        /*
+        .lightbox { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
+        .lightbox.visible { display: flex; justify-content: center; align-items: center; }
+        .lightbox-content { margin: auto; display: block; max-width: 90%; max-height: 90%; animation: zoomInSmooth 0.4s ease-out; }
+        .close { position: absolute; top: 25px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: 0.3s; cursor: pointer; }
+        .close:hover, .close:focus { color: #bbb; text-decoration: none; }
+        @keyframes zoomInSmooth { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        */
+
+    </style>
+
+</head>
+<body>
+
+    <!-- =========================
+         I. En-tête (Header)
+    ============================== -->
+    <header id="en-tete" class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="https://www.coupdepub.ca">
+                    <!-- Assurez-vous que le logo est accessible -->
+                    <img src="https://www.coupdepub.ca/we/we.dll/Pic?UN=263910&F=C&T=801&Age=1517061716" alt="Logo Coup de Pub">
+                </a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                </button>
+            </div>
+            <nav class="collapse navbar-collapse" id="main-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="#accueil">Accueil</a></li>
+                    <li><a href="#produits">Produits Proposés</a></li>
+                    <li><a href="#a-propos">À Propos</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ========================================
+         II. Section d’Introduction / Accueil
+    ========================================= -->
+    <section id="accueil" class="page-section">
+        <div class="container">
+            <div class="text-center">
+                <div class="client-intro-box">
+                    <!-- *** REMPLACER LES PLACEHOLDERS CI-DESSOUS *** -->
+                    <h3>Présentation Personnalisée pour {{nom_compagnie_client}}</h3>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <ul class="client-info first">
+                                <li><strong>Contact :</strong> {{nom_contact_client}}</li>
+                                <li><strong>Entreprise :</strong> {{nom_entreprise_registre}}</li> <!-- Ou nom usuel si différent -->
+                                <li><strong>Adresse :</strong> {{adresse_client}}</li>
+                            </ul>
+                        </div>
+                         <div class="col-md-6 col-sm-12">
+                            <ul class="client-info last">
+                                <li><strong>Téléphone :</strong> {{telephone_contact_client}}</li>
+                                <li><strong>Téléphone (Bureau) :</strong> {{telephone_general_client}}</li>
+                                <li><strong>Courriel :</strong> <a href="mailto:{{email_contact_client}}">{{email_contact_client}}</a></li>
+                            </ul>
+                         </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="header-text">
+                                <h4>Bonjour {{nom_contact_client}},</h4>
+                                <p>{{texte_introduction_personnalise}}</p>
+                                <!-- Vous pouvez ajouter d'autres paragraphes personnalisés ici -->
+                                <p>N'hésitez pas si vous avez des questions ou souhaitez discuter de ces options plus en détail !</p>
+                            </div>
+                            <!-- Bouton Imprimer ajouté ici -->
+                            <div style="margin-top: 25px; text-align: center;" class="print-button-container">
+                                <button onclick="window.print();" class="btn btn-default btn-lg">
+                                    <i class="fa fa-print"></i> Imprimer la Présentation
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================
+         IV. Nos Services / Offres (Produits)
+    =================================== -->
+    <section id="produits" class="page-section bg-light">
+        <div class="container">
+            <h2 class="text-center">Sélection de Produits Proposés</h2>
+
+            <!-- === DEBUT Produit 1 === -->
+            <!-- *** COPIER CE BLOC POUR AJOUTER PLUS DE PRODUITS *** -->
+            <!-- *** REMPLACER LES PLACEHOLDERS {{produit_1_...}} CI-DESSOUS *** -->
+            <div class="product keeptogether">
+                <div class="row">
+                   <div class="col-sm-7">
+                       <div class="product-image-container" onclick="enlargeImage(this.querySelector('.main-product-image-bg').style.backgroundImage.slice(5, -2))">
+                            <!-- Remplacer l'URL de l'image principale -->
+                            <div class="main-product-image-bg" style="background-image: url('{{produit_1_image_principale_url}}');"></div>
+                       </div>
+                       <!-- Galerie d'images secondaires (optionnel) -->
+                       <!-- Mettre display: block; si utilisé, et ajouter des miniatures -->
+                        <div class="gallery" style="display: none;">
+                            <div class="row">
+                                <!-- Répéter pour chaque image galerie. La première devrait avoir la classe 'active' -->
+                                <!-- <div class="thumbnail-container active" style="background-image: url('{{produit_1_image_galerie_1_url}}');" onclick="switchMainImage(this)"></div> -->
+                                <!-- <div class="thumbnail-container" style="background-image: url('{{produit_1_image_galerie_2_url}}');" onclick="switchMainImage(this)"></div> -->
+                            </div>
+                        </div>
+                   </div>
+                   <div class="col-sm-5">
+                       <!-- Remplacer Titre et Numéro d'article -->
+                       <p class="title">{{produit_1_numero_ordre}}. {{produit_1_titre}}</p>
+                       <p class="item"><strong>Numéro d'article:</strong> {{produit_1_numero_article}}</p>
+                       <!-- Remplacer Description -->
+                       <p class="description">{{produit_1_description}}</p>
+
+                       <!-- Options (Couleurs/Tailles) - Optionnel -->
+                       <div>
+                           <span class="product-options-label">Options disponibles :</span>
+                           <div class="options-container">
+                               <!-- Répéter pour chaque couleur -->
+                               <!-- <span class="color-circle" style="background-color: {{produit_1_code_couleur_1}};" title="{{produit_1_nom_couleur_1}}"></span> -->
+                               <!-- <span class="color-circle" style="background-color: {{produit_1_code_couleur_2}};" title="{{produit_1_nom_couleur_2}}"></span> -->
+                               <!-- Répéter pour chaque taille -->
+                               <!-- <span class="size-circle" title="{{produit_1_nom_taille_1}}">{{produit_1_label_taille_1}}</span> -->
+                               <!-- <span class="size-circle" title="{{produit_1_nom_taille_2}}">{{produit_1_label_taille_2}}</span> -->
+                               <!-- Exemple "Plus d'options" -->
+                               <!-- <span class="size-circle" title="Plus d'options disponibles...">...</span> -->
+                           </div>
+                       </div>
+
+                       <!-- Tableau de Prix -->
+                       <div class="table-responsive">
+                           <table class="price-grid table">
+                               <thead>
+                                   <tr class="price-qty-row">
+                                       <!-- Adapter les quantités -->
+                                       <th>Qté</th>
+                                       <th>{{produit_1_qte_1}}</th>
+                                       <!-- <th>{{produit_1_qte_2}}</th> -->
+                                       <!-- <th>{{produit_1_qte_3}}</th> -->
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <tr>
+                                       <!-- Adapter le libellé et les prix unitaires -->
+                                       <td class="nowrap">Prix Unitaire ($ CA)</td>
+                                       <td>{{produit_1_prix_1}}</td>
+                                       <!-- <td>{{produit_1_prix_2}}</td> -->
+                                       <!-- <td>{{produit_1_prix_3}}</td> -->
+                                   </tr>
+                                   <!-- Ajouter d'autres lignes si nécessaire (ex: prix incluant déco) -->
+                                   <!--
+                                   <tr>
+                                       <td class="nowrap">Prix avec Déco ($ CA)</td>
+                                       <td>{{produit_1_prix_deco_1}}</td>
+                                       <td>{{produit_1_prix_deco_2}}</td>
+                                       <td>{{produit_1_prix_deco_3}}</td>
+                                   </tr>
+                                    -->
+                               </tbody>
+                           </table>
+                       </div>
+
+                       <!-- Informations Additionnelles (Décoration, Frais, Notes) - Optionnel -->
+                       <p class="additional">{{produit_1_info_decoration}}</p>
+                       <p class="additional">{{produit_1_frais_supplementaires}}</p>
+                       <p class="additional">{{produit_1_note_speciale}}</p>
+                   </div>
+               </div>
+           </div>
+           <!-- === FIN Produit 1 === -->
+
+            <!-- === DEBUT Produit 2 === -->
+            <!-- *** COPIER/COLLER LE BLOC PRODUIT CI-DESSUS ET ADAPTER LES PLACEHOLDERS POUR LE PRODUIT 2 *** -->
+            <!-- <div class="product keeptogether"> ... contenu produit 2 ... </div> -->
+            <!-- === FIN Produit 2 === -->
+
+            <!-- === DEBUT Produit 3 === -->
+            <!-- *** COPIER/COLLER LE BLOC PRODUIT CI-DESSUS ET ADAPTER LES PLACEHOLDERS POUR LE PRODUIT 3 *** -->
+            <!-- <div class="product keeptogether"> ... contenu produit 3 ... </div> -->
+            <!-- === FIN Produit 3 === -->
+
+
+            <!-- Ajoutez d'autres blocs produits ici si nécessaire -->
+
+        </div><!-- /.container -->
+    </section>
+
+    <!-- ==================================
+         NEW: Section Contact et Réponse (Simplifiée)
+    =================================== -->
+    <section id="reponse-presentation" class="page-section" style="background-color: #63735d; padding: 40px 0;">
+        <div class="container">
+            <h2 class="text-center" style="color: #ffffff; margin-bottom: 30px;">QUESTIONS OU COMMENTAIRES ?</h2>
+            <p class="text-center" style="color:#ffffff; font-size: 1.1em; margin-bottom: 20px;">Utilisez le formulaire ci-dessous pour nous envoyer un message directement.</p>
+            <div class="form-group">
+                <label for="responseMessage" style="font-weight: 600; color: #ffffff;">Votre message :</label>
+                <textarea class="form-control" id="responseMessage" rows="5" placeholder="Écrivez votre message ici..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="representativeSelect" style="font-weight: 600; color: #ffffff;">Transmettre à :</label>
+                <!-- Assurez-vous que les emails et noms sont corrects -->
+                <select class="form-control" id="representativeSelect" onchange="updateMailtoLink()">
+                    <option value="info@coupdepub.ca" data-name="Mylène Carrier">Mylène Carrier</option>
+                    <option value="vente@coupdepub.ca" data-name="Marie-Michelle Trahan">Marie-Michelle Trahan</option>
+                    <option value="sebastien@coupdepub.ca" data-name="Sébastien Monteil">Sébastien Monteil</option>
+                    <!-- Ajoutez d'autres représentants si nécessaire -->
+                </select>
+            </div>
+            <div class="text-center" style="margin-top: 30px;">
+                <!-- Le bouton ouvre le client email par défaut de l'utilisateur -->
+                <a id="sendEmailBtn" class="btn btn-lg" style="background-color: #323232; border-color: #ffffff; color: #ffffff; padding: 12px 30px; font-size: 1.1em;" href="#">
+                    <i class="fa fa-envelope-o"></i> Envoyer par Courriel
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         X. Pied de page (Footer)
+    ============================= -->
+    <footer class="footer cdp-footer">
+        <div class="cdp-footer-container">
+            <!-- Sections À propos, Liens, Contact, Infolettre -->
+            <div class="cdp-footer-section cdp-about-section">
+                <h3 class="cdp-footer-heading">&Agrave; propos de Coup de Pub</h3>
+                <p>Votre partenaire en objets promotionnels et vêtements personnalisés, au service des entreprises d'ici.</p>
+                <a href="https://www.coupdepub.ca" target="_blank" rel="noopener noreferrer" aria-label="Site Coup de Pub"> <img class="cdp-footer-logo" src="https://www.coupdepub.ca/files/cdpnoirfondtransparent.png" alt="Logo Coup de Pub Footer" /> </a>
+            </div>
+            <div class="cdp-footer-section cdp-links-section">
+                <h3 class="cdp-footer-heading">Liens rapides</h3>
+                <ul class="cdp-footer-links">
+                    <li><a href="https://www.coupdepub.ca/:quicksearch.htm?quicksearchbox=Vetements">Vêtements</a></li>
+                    <li><a href="https://www.coupdepub.ca/:quicksearch.htm?quicksearchbox=Accessoires+de+bureau+et+d%E2%80%99%C3%A9criture">Bureau & Écriture</a></li>
+                    <li><a href="https://www.coupdepub.ca/:quicksearch.htm?quicksearchbox=Produits+technologiques+et+%C3%A9lectroniques">Technologie</a></li>
+                    <li><a href="https://www.coupdepub.ca/:quicksearch.htm?quicksearchbox=sac">Sacs</a></li>
+                    <li><a href="https://www.coupdepub.ca/:quicksearch.htm?quicksearchbox=boire">Boire</a></li>
+                    <!-- Mettez à jour les liens si nécessaire -->
+                    <li><a href="https://www.coupdepub.ca/privacy-policy.htm">Politique de Confidentialité</a></li>
+                    <li><a href="#">Termes & Conditions</a></li> <!-- Lien à ajouter si existant -->
+                </ul>
+            </div>
+            <div class="cdp-footer-section cdp-contact-section">
+                <h3 class="cdp-footer-heading">Contact</h3>
+                <address class="cdp-footer-address">
+                    <p><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> <span>4928, rue Ambroise-Lafortune, Boisbriand, J7H 1S6</span></p>
+                    <p><i class="fa fa-phone fa-fw" aria-hidden="true"></i> <a href="tel:+15143603245">(514) 360-3245</a></p>
+                    <p><i class="fa fa-envelope fa-fw" aria-hidden="true"></i> <a href="mailto:info@coupdepub.ca">info@coupdepub.ca</a></p>
+                </address>
+            </div>
+            <div class="cdp-footer-section cdp-newsletter-section">
+                 <h3 class="cdp-footer-heading">Suivez-nous</h3>
+                 <p>Restez connectés avec Coup de Pub !</p> <!-- Texte ajusté -->
+                 <div class="cdp-social-icons" style="margin-bottom: 25px;">
+                    <!-- Mettez à jour les liens vers VOS profils sociaux -->
+                    <a title="Facebook" href="https://www.facebook.com/VOTREPAGE" target="_blank" rel="noopener noreferrer" aria-label="Facebook"> <img src="https://www.coupdepub.ca/files/icons8-facebook.svg" alt="Facebook" /> </a>
+                    <a title="LinkedIn" href="https://www.linkedin.com/company/VOTREPAGE" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"> <img src="https://www.coupdepub.ca/files/5296501_linkedin_network_linkedin-logo_icon.svg" alt="LinkedIn" /> </a>
+                    <a title="Instagram" href="https://www.instagram.com/VOTRECOMPTE" target="_blank" rel="noopener noreferrer" aria-label="Instagram"> <img src="https://www.coupdepub.ca/files/icons8-instagram.svg" alt="Instagram" /> </a>
+                    <!-- Ajoutez/supprimez des icônes selon vos présences -->
+                </div>
+                 <!-- Section Infolettre (Optionnelle, peut être simplifiée/supprimée) -->
+                 <!-- <h4 class="cdp-footer-subheading">Infolettre</h4> -->
+                 <!-- Formulaire Infolettre commenté par défaut -->
+                 <!--
+                 <form id="newsletterForm" class="cdp-newsletter-form" action="#" method="post">
+                     <label class="sr-only" for="newsletterEmail">Adresse courriel</label>
+                     <input id="newsletterEmail" class="newsletter-input" name="email" required="" type="email" placeholder="Votre adresse courriel" aria-label="Adresse courriel pour l'infolettre" />
+                     <button class="newsletter-button" type="submit" aria-label="S'inscrire &agrave; l'infolettre">
+                         <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                     </button>
+                 </form>
+                 <div id="newsletterConfirmation" style="display: none; margin-top: 10px; color: #BDC3C7;">Merci !</div>
+                 -->
+            </div>
+
+            <div class="cdp-footer-bottom">
+                <!-- *** REMPLACER L'ANNEE COURANTE *** -->
+                <p class="cdp-copyright">&copy; {{annee_courante}} Coup de Pub. Tous droits réservés.</p>
+                <!-- Disclaimer optionnel -->
+                <!-- <p class="cdp-footer-disclaimer">Les prix et disponibilités sont sujets à changement sans préavis.</p> -->
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================
+         Scripts JS
+    ============================== -->
+    <!-- jQuery (1.12.4) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Bootstrap JS (3.4.1) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+    <!-- Script Popup & Galerie & Email -->
+    <script>
+        // COMPAT: Utilisation de fonctions standard et var pour compatibilité IE11+
+
+        function enlargeImage(src) {
+            // Utiliser une popup simple pour l'agrandissement
+            var popupWidth = Math.min(screen.width * 0.9, 1200); // Limiter la largeur max
+            var popupHeight = Math.min(screen.height * 0.8, 900); // Limiter la hauteur max
+            var left = (screen.width / 2) - (popupWidth / 2);
+            var top = (screen.height / 2) - (popupHeight / 2);
+            var features = 'width=' + popupWidth + ',height=' + popupHeight + ',top=' + top + ',left=' + left + ',resizable=yes,scrollbars=yes';
+
+            var popup = window.open('', 'ImagePopup', features);
+            if (popup) {
+                 popup.document.write(
+                    '<!DOCTYPE html><html lang="fr"><head><title>Image Agrandie</title><style>' +
+                    'body { margin: 0; display: flex; justify-content: center; align-items: center; background-color: #333; height: 100vh; overflow: hidden; }' +
+                    'img { max-width: 100%; max-height: 100%; display: block; object-fit: contain; }' +
+                    '.close-btn { position: absolute; top: 15px; right: 15px; font-size: 30px; color: white; text-shadow: 0 1px 2px black; cursor: pointer; background: transparent; border: none; line-height: 1; padding: 5px; }' +
+                    '</style></head><body>' +
+                    '<button class="close-btn" onclick="window.close()" title="Fermer">&times;</button>' +
+                    '<img src="' + src + '" alt="Image agrandie">' +
+                    '</body></html>'
+                 );
+                 popup.document.close();
+                 popup.focus(); // Mettre la popup au premier plan
+            } else {
+                alert("Le blocage des pop-ups peut empêcher l'ouverture de l'image. Veuillez autoriser les pop-ups pour ce site.");
+            }
+        }
+
+        function switchMainImage(thumbnailElement) {
+            // Récupérer l'URL de la miniature cliquée
+            var newImageSrc = thumbnailElement.style.backgroundImage.slice(5, -2);
+             // Trouver le bloc produit parent
+            var productBlock = findAncestor(thumbnailElement, 'product');
+            if (!productBlock) return;
+            // Trouver l'élément image principal dans ce bloc
+            var mainImageElement = productBlock.querySelector('.main-product-image-bg');
+            if (!mainImageElement) return;
+            // Changer l'image principale
+            mainImageElement.style.backgroundImage = 'url("' + newImageSrc + '")'; // Ajouter des guillemets autour de l'URL
+
+            // Gérer la classe 'active' sur les miniatures
+            var galleryThumbnails = productBlock.querySelectorAll('.thumbnail-container');
+            for (var i = 0; i < galleryThumbnails.length; i++) {
+                galleryThumbnails[i].classList.remove('active');
+            }
+            thumbnailElement.classList.add('active');
+        }
+
+        // Fonction helper pour simuler .closest() pour compatibilité
+        function findAncestor (el, cls) {
+            while ((el = el.parentElement) && !el.classList.contains(cls));
+            return el;
+        }
+
+        // Met à jour le lien mailto: en fonction du message et du destinataire sélectionné
+        function updateMailtoLink() {
+             var textArea = document.getElementById('responseMessage');
+             var sendBtn = document.getElementById('sendEmailBtn');
+             var representativeSelect = document.getElementById('representativeSelect');
+
+             if (!textArea || !sendBtn || !representativeSelect) {
+                 if(window.console) { console.error("Éléments requis non trouvés pour le lien mailto."); }
+                 return;
+             }
+
+             var selectedOption = representativeSelect.options[representativeSelect.selectedIndex];
+             var recipientEmail = selectedOption.value;
+             // Essayer de récupérer le nom du data-attribute, sinon utiliser le texte de l'option
+             var representativeName = selectedOption.getAttribute('data-name') || selectedOption.text;
+
+             // Récupérer le nom du contact client depuis la section accueil (si possible)
+             var clientNameElement = document.querySelector('#accueil .client-info strong'); // Cherche le premier <strong> dans .client-info
+             var clientName = clientNameElement ? clientNameElement.nextSibling.textContent.trim() : "Client"; // Extrait le nom à côté de "Contact :"
+             var companyNameElement = document.querySelector('#accueil .client-info li:nth-child(2) strong'); // Cherche le <strong> de "Entreprise :"
+             var companyName = companyNameElement ? companyNameElement.nextSibling.textContent.trim() : "{{nom_compagnie_client}}"; // Extrait le nom de l'entreprise
+
+             var emailSubject = "Question/Commentaire concernant la présentation pour " + companyName;
+             var originalBody = textArea.value;
+             // Pré-remplir le corps de l'email
+             var emailBodyContent = "Bonjour " + representativeName + ",\n\n" +
+                                    "Concernant la présentation pour " + companyName + ", j'ai le message suivant :\n\n" +
+                                    originalBody + "\n\n" +
+                                    "Cordialement,\n\n" +
+                                    clientName; // Ajoute le nom du contact client à la fin
+
+             var emailBody = encodeURIComponent(emailBodyContent);
+
+             // Mettre à jour le lien mailto
+             sendBtn.href = "mailto:" + recipientEmail + "?subject=" + encodeURIComponent(emailSubject) + "&body=" + emailBody;
+         }
+
+         // Attacher les écouteurs d'événements une fois le DOM chargé
+         document.addEventListener('DOMContentLoaded', function() {
+             var textArea = document.getElementById('responseMessage');
+             var representativeSelect = document.getElementById('representativeSelect');
+
+             // Mettre à jour le lien quand le texte change
+             if (textArea) {
+                 if (textArea.addEventListener) {
+                    textArea.addEventListener('input', updateMailtoLink);
+                 } else if (textArea.attachEvent) { // Fallback IE8
+                    textArea.attachEvent('onpropertychange', function(event) {
+                        if (event.propertyName === 'value') { updateMailtoLink(); }
+                    });
+                 }
+             }
+             // Mettre à jour le lien quand le représentant change
+             if (representativeSelect) {
+                 if (representativeSelect.addEventListener) {
+                    representativeSelect.addEventListener('change', updateMailtoLink);
+                 } else if (representativeSelect.attachEvent) { // Fallback IE8
+                    representativeSelect.attachEvent('onchange', updateMailtoLink);
+                 }
+             }
+
+             // Initialiser le lien mailto au chargement de la page
+             updateMailtoLink();
+         });
+
+    </script>
+
+</body>
+</html>
