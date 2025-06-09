@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanVert - Votre Assistant Culinaire Intelligent</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2ECC71;
+            --primary-dark: #27AE60;
+            --secondary-color: #3498DB;
+            --accent-color: #E74C3C;
+            --warning-color: #F39C12;
+            --success-color: #27AE60;
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #2C3E50;
+            --text-secondary: #7F8C8D;
+            --border-color: #E0E6ED;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.15);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 1.25rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .nav-tab i {
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .nav-tab.active {
+            color: var(--primary-color);
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        .nav-tab:hover {
+            background: rgba(46, 204, 113, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* Content Sections */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Form Elements */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-input, .form-select {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--bg-secondary);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+        }
+
+        /* Multi-select */
+        .multi-select {
+            position: relative;
+        }
+
+        .multi-select-trigger {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-secondary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .multi-select-trigger:hover {
+            border-color: var(--primary-color);
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border: 2px solid var(--primary-color);
+            border-top: none;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+
+        .multi-select-dropdown.show {
+            display: block;
+        }
+
+        .multi-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .multi-option:hover {
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        .selected-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .selected-item {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-item {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .remove-item:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Recipe Result */
+        .recipe-result {
+            background: linear-gradient(135deg, #E8F5E8 0%, #F1F8E9 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .recipe-result.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .recipe-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe-item {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .recipe-item i {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-btn {
+            background: var(--bg-secondary);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .quick-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Weekly Planner */
+        .weekly-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .day-card {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .day-header {
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .meal-slot {
+            background: var(--bg-primary);
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 0.75rem 0;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .meal-slot:hover {
+            border-color: var(--primary-color);
+            background: rgba(46, 204, 113, 0.05);
+        }
+
+        .meal-slot.filled {
+            background: var(--primary-color);
+            color: white;
+            border: 2px solid var(--primary-color);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: var(--transition);
+            max-width: 350px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success { background: var(--success-color); }
+        .notification.warning { background: var(--warning-color); }
+        .notification.error { background: var(--accent-color); }
+
+        /* Recipe Cards */
+        .recipe-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .recipe-card {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .recipe-card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .recipe-card-body {
+            padding: 1.5rem;
+        }
+
+        .recipe-list {
+            list-style: none;
+        }
+
+        .recipe-list li {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: var(--bg-primary);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .recipe-list li:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* Shopping List */
+        .shopping-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            margin: 0.5rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .shopping-item.checked {
+            opacity: 0.6;
+            text-decoration: line-through;
+            background: var(--bg-primary);
+        }
+
+        .shopping-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .nav-tabs {
+                overflow-x: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            
+            .nav-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .nav-tab {
+                min-width: 120px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .notification {
+                right: 1rem;
+                left: 1rem;
+                transform: translateY(-100px);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1><i class="fas fa-seedling"></i> PlanVert</h1>
+        <p>Votre assistant culinaire intelligent pour une alimentation saine et équilibrée</p>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="quick-btn" onclick="generateRandomMeal()">
+                <i class="fas fa-dice"></i>
+                <div>
+                    <div style="font-size: 1.1rem;">Repas Surprise</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Génération aléatoire</div>
+                </div>
+            </button>
+            <button class="quick-btn" onclick="generateWeeklyPlan()">
+                <i class="fas fa-calendar-week"></i>
+                <div>
+                    <div style="font-size: 1.1rem;">Planning Auto</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">7 jours complets</div>
+                </div>
+            </button>
+            <button class="quick-btn" onclick="generateShoppingList()">
+                <i class="fas fa-shopping-cart"></i>
+                <div>
+                    <div style="font-size: 1.1rem;">Liste Courses</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Automatique</div>
+                </div>
+            </button>
+            <button class="quick-btn" onclick="showNutritionalTips()">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <div style="font-size: 1.1rem;">Conseils Nutrition</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Astuces santé</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="generator">
+                <i class="fas fa-magic"></i>
+                <span>Créer</span>
+            </button>
+            <button class="nav-tab" data-tab="recipes">
+                <i class="fas fa-box"></i>
+                <span>My Recipe Box</span>
+            </button>
+            <button class="nav-tab" data-tab="planner">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Planning</span>
+            </button>
+            <button class="nav-tab" data-tab="favorites">
+                <i class="fas fa-heart"></i>
+                <span>Favoris <span id="favCount">0</span></span>
+            </button>
+            <button class="nav-tab" data-tab="shopping">
+                <i class="fas fa-shopping-basket"></i>
+                <span>Courses <span id="shopCount">0</span></span>
+            </button>
+        </nav>
+
+        <!-- Tab Content: Meal Generator -->
+        <div id="generator" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-magic" style="color: var(--primary-color); font-size: 2rem;"></i>
+                    <h2 class="card-title">Créateur de Repas Personnalisé</h2>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-dumbbell"></i> Protéines
+                        </label>
+                        <div class="multi-select" id="protein-select">
+                            <div class="multi-select-trigger" onclick="toggleDropdown('protein')">
+                                <span id="protein-display">Choisissez vos protéines</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="protein-dropdown">
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Protéines végétales très riches</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Spiruline')"><input type="checkbox" value="Spiruline"> Spiruline</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Seitan')"><input type="checkbox" value="Seitan"> Seitan</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Soja (graines, texturé)')"><input type="checkbox" value="Soja (graines, texturé)"> Soja (graines, texturé)</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Tempeh')"><input type="checkbox" value="Tempeh"> Tempeh</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Tofu')"><input type="checkbox" value="Tofu"> Tofu</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Lupin')"><input type="checkbox" value="Lupin"> Lupin</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Protéines de pois')"><input type="checkbox" value="Protéines de pois"> Protéines de pois</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Protéines de riz')"><input type="checkbox" value="Protéines de riz"> Protéines de riz</div>
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Légumineuses</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Lentilles')"><input type="checkbox" value="Lentilles"> Lentilles</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Pois chiches')"><input type="checkbox" value="Pois chiches"> Pois chiches</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Haricots noirs')"><input type="checkbox" value="Haricots noirs"> Haricots noirs</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Haricots rouges')"><input type="checkbox" value="Haricots rouges"> Haricots rouges</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Haricots blancs')"><input type="checkbox" value="Haricots blancs"> Haricots blancs</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Pois cassés')"><input type="checkbox" value="Pois cassés"> Pois cassés</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Fèves')"><input type="checkbox" value="Fèves"> Fèves</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Edamame')"><input type="checkbox" value="Edamame"> Edamame</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Soja vert')"><input type="checkbox" value="Soja vert"> Soja vert</div>
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Céréales et pseudo-céréales</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Quinoa')"><input type="checkbox" value="Quinoa"> Quinoa</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Sarrasin')"><input type="checkbox" value="Sarrasin"> Sarrasin</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Amarante')"><input type="checkbox" value="Amarante"> Amarante</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Millet')"><input type="checkbox" value="Millet"> Millet</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Avoine sans gluten')"><input type="checkbox" value="Avoine sans gluten"> Avoine sans gluten</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Teff')"><input type="checkbox" value="Teff"> Teff</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Orge')"><input type="checkbox" value="Orge"> Orge</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Riz complet')"><input type="checkbox" value="Riz complet"> Riz complet</div>
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Graines et oléagineux</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Graines de courge')"><input type="checkbox" value="Graines de courge"> Graines de courge</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Graines de chanvre')"><input type="checkbox" value="Graines de chanvre"> Graines de chanvre</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Graines de tournesol')"><input type="checkbox" value="Graines de tournesol"> Graines de tournesol</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Graines de chia')"><input type="checkbox" value="Graines de chia"> Graines de chia</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Graines de lin')"><input type="checkbox" value="Graines de lin"> Graines de lin</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Amandes')"><input type="checkbox" value="Amandes"> Amandes</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Noix de cajou')"><input type="checkbox" value="Noix de cajou"> Noix de cajou</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Noix du Brésil')"><input type="checkbox" value="Noix du Brésil"> Noix du Brésil</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Noisettes')"><input type="checkbox" value="Noisettes"> Noisettes</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Pistaches')"><input type="checkbox" value="Pistaches"> Pistaches</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Noix')"><input type="checkbox" value="Noix"> Noix</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Cacahuètes')"><input type="checkbox" value="Cacahuètes"> Cacahuètes</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Pignons de pin')"><input type="checkbox" value="Pignons de pin"> Pignons de pin</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Noix de macadamia')"><input type="checkbox" value="Noix de macadamia"> Noix de macadamia</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Noix de pécan')"><input type="checkbox" value="Noix de pécan"> Noix de pécan</div>
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Protéines animales</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Poulet grillé')"><input type="checkbox" value="Poulet grillé"> Poulet grillé</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Dinde')"><input type="checkbox" value="Dinde"> Dinde</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Boeuf')"><input type="checkbox" value="Boeuf"> Boeuf</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Porc')"><input type="checkbox" value="Porc"> Porc</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Agneau')"><input type="checkbox" value="Agneau"> Agneau</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Veau')"><input type="checkbox" value="Veau"> Veau</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Canard')"><input type="checkbox" value="Canard"> Canard</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Saumon')"><input type="checkbox" value="Saumon"> Saumon</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Thon')"><input type="checkbox" value="Thon"> Thon</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Maquereau')"><input type="checkbox" value="Maquereau"> Maquereau</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Sardines')"><input type="checkbox" value="Sardines"> Sardines</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Crevettes')"><input type="checkbox" value="Crevettes"> Crevettes</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Moules')"><input type="checkbox" value="Moules"> Moules</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Coquilles Saint-Jacques')"><input type="checkbox" value="Coquilles Saint-Jacques"> Coquilles Saint-Jacques</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Crabe')"><input type="checkbox" value="Crabe"> Crabe</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Homard')"><input type="checkbox" value="Homard"> Homard</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Œufs')"><input type="checkbox" value="Œufs"> Œufs</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Fromage blanc')"><input type="checkbox" value="Fromage blanc"> Fromage blanc</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Yaourt grec')"><input type="checkbox" value="Yaourt grec"> Yaourt grec</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Lait')"><input type="checkbox" value="Lait"> Lait</div>
+                                <div class="multi-option" onclick="selectOption('protein', 'Fromage')"><input type="checkbox" value="Fromage"> Fromage</div>
+                            </div>
+                            <div class="selected-items" id="protein-selected"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-utensils"></i> Type de plat
+                        </label>
+                        <select class="form-select" id="dish-type">
+                            <option value="">Choisissez un type</option>
+                            <optgroup label="Plats en bol">
+                                <option value="Bowl">Bowl (bol)</option>
+                                <option value="Poke bowl">Poke bowl</option>
+                                <option value="Buddha bowl">Buddha bowl</option>
+                                <option value="Bol de céréales">Bol de céréales</option>
+                                <option value="Bol asiatique">Bol asiatique</option>
+                                <option value="Bol mexicain">Bol mexicain</option>
+                            </optgroup>
+                            <optgroup label="Salades">
+                                <option value="Salade-repas">Salade-repas</option>
+                                <option value="Salade composée">Salade composée</option>
+                                <option value="Taboulé">Taboulé</option>
+                                <option value="Salade de pâtes">Salade de pâtes</option>
+                                <option value="Salade de riz">Salade de riz</option>
+                                <option value="Salade tiède">Salade tiède</option>
+                            </optgroup>
+                            <optgroup label="Plats mijotés & chauds">
+                                <option value="Curry">Curry</option>
+                                <option value="Ragoût">Ragoût</option>
+                                <option value="Chili">Chili</option>
+                                <option value="Tajine">Tajine</option>
+                                <option value="Couscous">Couscous</option>
+                                <option value="Lasagnes">Lasagnes</option>
+                                <option value="Stew">Stew</option>
+                                <option value="Potée">Potée</option>
+                                <option value="Casserole">Casserole</option>
+                                <option value="Parmentier">Parmentier</option>
+                                <option value="Gratin">Gratin</option>
+                                <option value="Poêlée">Poêlée</option>
+                                <option value="Papillote">Papillote</option>
+                                <option value="Plancha">Plancha</option>
+                                <option value="Fondue">Fondue</option>
+                                <option value="Raclette végétale">Raclette végétale</option>
+                                <option value="Tian">Tian</option>
+                                <option value="Flan salé">Flan salé</option>
+                                <option value="Clafoutis salé">Clafoutis salé</option>
+                                <option value="Crumble salé">Crumble salé</option>
+                            </optgroup>
+                            <optgroup label="Soupes & bouillons">
+                                <option value="Soupe">Soupe</option>
+                                <option value="Bouillon">Bouillon</option>
+                                <option value="Ramen">Ramen</option>
+                                <option value="Pho">Pho</option>
+                                <option value="Gaspacho">Gaspacho</option>
+                                <option value="Chowder">Chowder</option>
+                            </optgroup>
+                            <optgroup label="Céréales & pâtes">
+                                <option value="Pâtes">Pâtes</option>
+                                <option value="Risotto">Risotto</option>
+                                <option value="Paëlla">Paëlla</option>
+                                <option value="Riz sauté">Riz sauté</option>
+                                <option value="Sauté au wok">Sauté au wok</option>
+                                <option value="Bento">Bento</option>
+                            </optgroup>
+                            <optgroup label="Plats à la main / street food">
+                                <option value="Wrap">Wrap</option>
+                                <option value="Tacos">Tacos</option>
+                                <option value="Burger">Burger</option>
+                                <option value="Sandwich">Sandwich</option>
+                                <option value="Tartine">Tartine</option>
+                                <option value="Hot-dog végétal">Hot-dog végétal</option>
+                                <option value="Pain bagnat">Pain bagnat</option>
+                                <option value="Quesadillas">Quesadillas</option>
+                                <option value="Fajitas">Fajitas</option>
+                                <option value="Enchiladas">Enchiladas</option>
+                                <option value="Tortilla">Tortilla</option>
+                                <option value="Empanadas">Empanadas</option>
+                                <option value="Samoussas">Samoussas</option>
+                                <option value="Rouleaux de printemps">Rouleaux de printemps</option>
+                                <option value="Makis">Makis</option>
+                                <option value="Sushi">Sushi</option>
+                                <option value="Roulé">Roulé</option>
+                            </optgroup>
+                            <optgroup label="Plats au four / tartes & cakes">
+                                <option value="Tarte salée">Tarte salée</option>
+                                <option value="Quiche">Quiche</option>
+                                <option value="Terrine">Terrine</option>
+                                <option value="Muffin salé">Muffin salé</option>
+                                <option value="Gaufre salée">Gaufre salée</option>
+                                <option value="Crêpe salée">Crêpe salée</option>
+                                <option value="Soufflé salé">Soufflé salé</option>
+                            </optgroup>
+                            <optgroup label="Plats protéinés / pièces principales">
+                                <option value="Steak végétal">Steak végétal</option>
+                                <option value="Brochette">Brochette</option>
+                                <option value="Grillade">Grillade</option>
+                                <option value="Grillades">Grillades</option>
+                                <option value="Boulettes">Boulettes</option>
+                                <option value="Croquettes">Croquettes</option>
+                                <option value="Nuggets">Nuggets</option>
+                                <option value="Tartare végétal">Tartare végétal</option>
+                                <option value="Carpaccio végétal">Carpaccio végétal</option>
+                            </optgroup>
+                            <optgroup label="Œufs & assimilés">
+                                <option value="Omelette">Omelette</option>
+                                <option value="Frittata">Frittata</option>
+                                <option value="Galette">Galette</option>
+                            </optgroup>
+                            <optgroup label="Plats apéritifs / bouchées">
+                                <option value="Bouchée">Bouchée</option>
+                                <option value="Tapas">Tapas</option>
+                                <option value="Mini burger">Mini burger</option>
+                                <option value="Mini wrap">Mini wrap</option>
+                                <option value="Mini quiche">Mini quiche</option>
+                            </optgroup>
+                            <optgroup label="Plats froids / crus">
+                                <option value="Ceviche végétal">Ceviche végétal</option>
+                                <option value="Carpaccio végétal">Carpaccio végétal</option>
+                                <option value="Tartare végétal">Tartare végétal</option>
+                            </optgroup>
+                            <optgroup label="Pizza & assimilés">
+                                <option value="Pizza">Pizza</option>
+                                <option value="Pizza bowl">Pizza bowl</option>
+                                <option value="Calzone végétal">Calzone végétal</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-carrot"></i> Légumes
+                        </label>
+                        <div class="multi-select" id="vegetables-select">
+                            <div class="multi-select-trigger" onclick="toggleDropdown('vegetables')">
+                                <span id="vegetables-display">Sélectionnez vos légumes</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="vegetables-dropdown">
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Légumes feuilles</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Épinards')"><input type="checkbox" value="Épinards"> Épinards</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Laitue')"><input type="checkbox" value="Laitue"> Laitue</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Roquette')"><input type="checkbox" value="Roquette"> Roquette</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou kale')"><input type="checkbox" value="Chou kale"> Chou kale</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Blette')"><input type="checkbox" value="Blette"> Blette</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Cresson')"><input type="checkbox" value="Cresson"> Cresson</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Mâche')"><input type="checkbox" value="Mâche"> Mâche</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou chinois')"><input type="checkbox" value="Chou chinois"> Chou chinois</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Salade romaine')"><input type="checkbox" value="Salade romaine"> Salade romaine</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Scarole')"><input type="checkbox" value="Scarole"> Scarole</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Laitue iceberg')"><input type="checkbox" value="Laitue iceberg"> Laitue iceberg</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Laitue batavia')"><input type="checkbox" value="Laitue batavia"> Laitue batavia</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Laitue feuille de chêne')"><input type="checkbox" value="Laitue feuille de chêne"> Laitue feuille de chêne</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousses d\'épinards')"><input type="checkbox" value="Pousses d'épinards"> Pousses d'épinards</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousses de moutarde')"><input type="checkbox" value="Pousses de moutarde"> Pousses de moutarde</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousses de pois')"><input type="checkbox" value="Pousses de pois"> Pousses de pois</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Légumes racines</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Carottes')"><input type="checkbox" value="Carottes"> Carottes</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Betteraves')"><input type="checkbox" value="Betteraves"> Betteraves</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Navets')"><input type="checkbox" value="Navets"> Navets</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Radis')"><input type="checkbox" value="Radis"> Radis</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Panais')"><input type="checkbox" value="Panais"> Panais</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Topinambour')"><input type="checkbox" value="Topinambour"> Topinambour</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Céleri-rave')"><input type="checkbox" value="Céleri-rave"> Céleri-rave</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Salsifis')"><input type="checkbox" value="Salsifis"> Salsifis</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Scorsonère')"><input type="checkbox" value="Scorsonère"> Scorsonère</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Rutabaga')"><input type="checkbox" value="Rutabaga"> Rutabaga</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Oca du Pérou')"><input type="checkbox" value="Oca du Pérou"> Oca du Pérou</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Cerfeuil tubéreux')"><input type="checkbox" value="Cerfeuil tubéreux"> Cerfeuil tubéreux</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Fleurs</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Brocoli')"><input type="checkbox" value="Brocoli"> Brocoli</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou-fleur')"><input type="checkbox" value="Chou-fleur"> Chou-fleur</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Artichaut')"><input type="checkbox" value="Artichaut"> Artichaut</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Romanesco')"><input type="checkbox" value="Romanesco"> Romanesco</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Broccolini')"><input type="checkbox" value="Broccolini"> Broccolini</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou brocoli-rave')"><input type="checkbox" value="Chou brocoli-rave"> Chou brocoli-rave</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Fruits</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Poivrons')"><input type="checkbox" value="Poivrons"> Poivrons</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Tomates')"><input type="checkbox" value="Tomates"> Tomates</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Aubergines')"><input type="checkbox" value="Aubergines"> Aubergines</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Courgettes')"><input type="checkbox" value="Courgettes"> Courgettes</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Concombre')"><input type="checkbox" value="Concombre"> Concombre</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Courge')"><input type="checkbox" value="Courge"> Courge</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Potiron')"><input type="checkbox" value="Potiron"> Potiron</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Potimarron')"><input type="checkbox" value="Potimarron"> Potimarron</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Citrouille')"><input type="checkbox" value="Citrouille"> Citrouille</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Avocat')"><input type="checkbox" value="Avocat"> Avocat</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Melon amer')"><input type="checkbox" value="Melon amer"> Melon amer</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Tomatillo')"><input type="checkbox" value="Tomatillo"> Tomatillo</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Piment')"><input type="checkbox" value="Piment"> Piment</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Gombo')"><input type="checkbox" value="Gombo"> Gombo</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Cornichon')"><input type="checkbox" value="Cornichon"> Cornichon</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Courge spaghetti')"><input type="checkbox" value="Courge spaghetti"> Courge spaghetti</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Courge butternut')"><input type="checkbox" value="Courge butternut"> Courge butternut</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Courge musquée')"><input type="checkbox" value="Courge musquée"> Courge musquée</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Courge delicata')"><input type="checkbox" value="Courge delicata"> Courge delicata</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Courge acorn')"><input type="checkbox" value="Courge acorn"> Courge acorn</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Tiges</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Asperges')"><input type="checkbox" value="Asperges"> Asperges</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Poireaux')"><input type="checkbox" value="Poireaux"> Poireaux</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Céleri branche')"><input type="checkbox" value="Céleri branche"> Céleri branche</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Fenouil')"><input type="checkbox" value="Fenouil"> Fenouil</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Rhubarbe')"><input type="checkbox" value="Rhubarbe"> Rhubarbe</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Cardon')"><input type="checkbox" value="Cardon"> Cardon</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousse de bambou')"><input type="checkbox" value="Pousse de bambou"> Pousse de bambou</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Bulbes</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Oignon')"><input type="checkbox" value="Oignon"> Oignon</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Ail')"><input type="checkbox" value="Ail"> Ail</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Échalote')"><input type="checkbox" value="Échalote"> Échalote</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Ciboule')"><input type="checkbox" value="Ciboule"> Ciboule</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Oignon rouge')"><input type="checkbox" value="Oignon rouge"> Oignon rouge</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Oignon blanc')"><input type="checkbox" value="Oignon blanc"> Oignon blanc</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Oignon nouveau')"><input type="checkbox" value="Oignon nouveau"> Oignon nouveau</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Ciboulette')"><input type="checkbox" value="Ciboulette"> Ciboulette</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Tubercules</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pomme de terre')"><input type="checkbox" value="Pomme de terre"> Pomme de terre</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Patate douce')"><input type="checkbox" value="Patate douce"> Patate douce</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Manioc')"><input type="checkbox" value="Manioc"> Manioc</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Igname')"><input type="checkbox" value="Igname"> Igname</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Taro')"><input type="checkbox" value="Taro"> Taro</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Crosne')"><input type="checkbox" value="Crosne"> Crosne</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Yacon')"><input type="checkbox" value="Yacon"> Yacon</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Champignons</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Champignons de Paris')"><input type="checkbox" value="Champignons de Paris"> Champignons de Paris</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pleurotes')"><input type="checkbox" value="Pleurotes"> Pleurotes</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Shiitake')"><input type="checkbox" value="Shiitake"> Shiitake</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Cèpes')"><input type="checkbox" value="Cèpes"> Cèpes</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Morilles')"><input type="checkbox" value="Morilles"> Morilles</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Girolles')"><input type="checkbox" value="Girolles"> Girolles</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Enoki')"><input type="checkbox" value="Enoki"> Enoki</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Portobello')"><input type="checkbox" value="Portobello"> Portobello</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Maitake')"><input type="checkbox" value="Maitake"> Maitake</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Trompette de la mort')"><input type="checkbox" value="Trompette de la mort"> Trompette de la mort</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Choux</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou vert')"><input type="checkbox" value="Chou vert"> Chou vert</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou rouge')"><input type="checkbox" value="Chou rouge"> Chou rouge</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou blanc')"><input type="checkbox" value="Chou blanc"> Chou blanc</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou de Bruxelles')"><input type="checkbox" value="Chou de Bruxelles"> Chou de Bruxelles</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou-rave')"><input type="checkbox" value="Chou-rave"> Chou-rave</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pak choï')"><input type="checkbox" value="Pak choï"> Pak choï</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou chinois')"><input type="checkbox" value="Chou chinois"> Chou chinois</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou frisé')"><input type="checkbox" value="Chou frisé"> Chou frisé</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou pointu')"><input type="checkbox" value="Chou pointu"> Chou pointu</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chou navet')"><input type="checkbox" value="Chou navet"> Chou navet</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Légumineuses fraîches</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Petit pois')"><input type="checkbox" value="Petit pois"> Petit pois</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pois gourmands')"><input type="checkbox" value="Pois gourmands"> Pois gourmands</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Haricots verts')"><input type="checkbox" value="Haricots verts"> Haricots verts</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Haricots beurre')"><input type="checkbox" value="Haricots beurre"> Haricots beurre</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Fèves fraîches')"><input type="checkbox" value="Fèves fraîches"> Fèves fraîches</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Edamame')"><input type="checkbox" value="Edamame"> Edamame</div>
+
+                                <div style="font-weight:bold; color:var(--primary-color); margin:0.5rem 0;">Autres</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Maïs')"><input type="checkbox" value="Maïs"> Maïs</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Okra')"><input type="checkbox" value="Okra"> Okra</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Endive')"><input type="checkbox" value="Endive"> Endive</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Radicchio')"><input type="checkbox" value="Radicchio"> Radicchio</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Crosne')"><input type="checkbox" value="Crosne"> Crosne</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousses de bambou')"><input type="checkbox" value="Pousses de bambou"> Pousses de bambou</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Salicorne')"><input type="checkbox" value="Salicorne"> Salicorne</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Algues')"><input type="checkbox" value="Algues"> Algues</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Coeur de palmier')"><input type="checkbox" value="Coeur de palmier"> Coeur de palmier</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Chayotte')"><input type="checkbox" value="Chayotte"> Chayotte</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Patidou')"><input type="checkbox" value="Patidou"> Patidou</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pois mange-tout')"><input type="checkbox" value="Pois mange-tout"> Pois mange-tout</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Salsifis')"><input type="checkbox" value="Salsifis"> Salsifis</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Topinambour')"><input type="checkbox" value="Topinambour"> Topinambour</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Céleri branche')"><input type="checkbox" value="Céleri branche"> Céleri branche</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Céleri-rave')"><input type="checkbox" value="Céleri-rave"> Céleri-rave</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousses de soja')"><input type="checkbox" value="Pousses de soja"> Pousses de soja</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousses de tournesol')"><input type="checkbox" value="Pousses de tournesol"> Pousses de tournesol</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousses de radis')"><input type="checkbox" value="Pousses de radis"> Pousses de radis</div>
+                                <div class="multi-option" onclick="selectOption('vegetables', 'Pousses de brocoli')"><input type="checkbox" value="Pousses de brocoli"> Pousses de brocoli</div>
+                            </div>
+                            <div class="selected-items" id="vegetables-selected"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-bread-slice"></i> Glucides
+                        </label>
+                        <select class="form-select" id="carbs">
+                            <option value="">Choisissez des glucides</option>
+                            <optgroup label="Céréales complètes">
+                                <option value="Quinoa">Quinoa</option>
+                                <option value="Riz brun">Riz brun</option>
+                                <option value="Riz complet">Riz complet</option>
+                                <option value="Millet">Millet</option>
+                                <option value="Sarrasin">Sarrasin</option>
+                                <option value="Amarante">Amarante</option>
+                                <option value="Teff">Teff</option>
+                                <option value="Avoine sans gluten">Avoine sans gluten</option>
+                                <option value="Orge">Orge</option>
+                                <option value="Épeautre">Épeautre</option>
+                                <option value="Kamut">Kamut</option>
+                                <option value="Boulgour de sarrasin">Boulgour de sarrasin</option>
+                                <option value="Fonio (Sénégal)">Fonio (Sénégal)</option>
+                            </optgroup>
+                            <optgroup label="Pâtes & assimilés">
+                                <option value="Pâtes sans gluten">Pâtes sans gluten</option>
+                                <option value="Pâtes de riz">Pâtes de riz</option>
+                                <option value="Pâtes de lentilles">Pâtes de lentilles</option>
+                                <option value="Pâtes de pois chiches">Pâtes de pois chiches</option>
+                                <option value="Nouilles de riz">Nouilles de riz</option>
+                                <option value="Nouilles soba (sarrasin)">Nouilles soba (sarrasin)</option>
+                                <option value="Vermicelles de riz">Vermicelles de riz</option>
+                                <option value="Vermicelles de soja">Vermicelles de soja</option>
+                            </optgroup>
+                            <optgroup label="Racines & tubercules">
+                                <option value="Pommes de terre">Pommes de terre</option>
+                                <option value="Patates douces">Patates douces</option>
+                                <option value="Manioc">Manioc</option>
+                                <option value="Igname">Igname</option>
+                                <option value="Taro">Taro</option>
+                                <option value="Topinambour">Topinambour</option>
+                                <option value="Panais">Panais</option>
+                                <option value="Crosne">Crosne</option>
+                                <option value="Yacon">Yacon</option>
+                                <option value="Oca du Pérou">Oca du Pérou</option>
+                                <option value="Rutabaga">Rutabaga</option>
+                            </optgroup>
+                            <optgroup label="Légumineuses">
+                                <option value="Lentilles">Lentilles</option>
+                                <option value="Pois chiches">Pois chiches</option>
+                                <option value="Haricots rouges">Haricots rouges</option>
+                                <option value="Haricots blancs">Haricots blancs</option>
+                                <option value="Haricots noirs">Haricots noirs</option>
+                                <option value="Fèves">Fèves</option>
+                                <option value="Pois cassés">Pois cassés</option>
+                                <option value="Edamame">Edamame</option>
+                                <option value="Soja">Soja</option>
+                            </optgroup>
+                            <optgroup label="Pseudo-céréales">
+                                <option value="Quinoa">Quinoa</option>
+                                <option value="Amarante">Amarante</option>
+                                <option value="Sarrasin">Sarrasin</option>
+                                <option value="Graines de chia">Graines de chia</option>
+                                <option value="Fonio (Sénégal)">Fonio (Sénégal)</option>
+                            </optgroup>
+                            <optgroup label="Riz & assimilés">
+                                <option value="Riz blanc">Riz blanc</option>
+                                <option value="Riz basmati">Riz basmati</option>
+                                <option value="Riz jasmin">Riz jasmin</option>
+                                <option value="Riz sauvage">Riz sauvage</option>
+                                <option value="Riz gluant">Riz gluant</option>
+                                <option value="Riz noir">Riz noir</option>
+                                <option value="Riz rouge">Riz rouge</option>
+                            </optgroup>
+                            <optgroup label="Maïs & assimilés">
+                                <option value="Maïs">Maïs</option>
+                                <option value="Polenta">Polenta</option>
+                                <option value="Tortilla de maïs">Tortilla de maïs</option>
+                                <option value="Arepa">Arepa</option>
+                            </optgroup>
+                            <optgroup label="Pain & galettes">
+                                <option value="Pain sans gluten">Pain sans gluten</option>
+                                <option value="Pain de sarrasin">Pain de sarrasin</option>
+                                <option value="Pain de riz">Pain de riz</option>
+                                <option value="Galette de riz">Galette de riz</option>
+                                <option value="Galette de maïs">Galette de maïs</option>
+                                <option value="Galette de sarrasin">Galette de sarrasin</option>
+                                <option value="Wrap sans gluten">Wrap sans gluten</option>
+                                <option value="Tortilla sans gluten">Tortilla sans gluten</option>
+                                <option value="Thiakry (Sénégal)">Thiakry (Sénégal)</option>
+                            </optgroup>
+                            <optgroup label="Autres">
+                                <option value="Boulgour de sarrasin">Boulgour de sarrasin</option>
+                                <option value="Semoule de maïs">Semoule de maïs</option>
+                                <option value="Semoule de riz">Semoule de riz</option>
+                                <option value="Patidou">Patidou</option>
+                                <option value="Courge spaghetti">Courge spaghetti</option>
+                                <option value="Courge butternut">Courge butternut</option>
+                                <option value="Courge musquée">Courge musquée</option>
+                                <option value="Courge delicata">Courge delicata</option>
+                                <option value="Courge acorn">Courge acorn</option>
+                                <option value="Châtaignes">Châtaignes</option>
+                                <option value="Banane plantain">Banane plantain</option>
+                                <option value="Sankhal (Sénégal)">Sankhal (Sénégal)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-tint"></i> Graisses saines
+                        </label>
+                        <select class="form-select" id="fats">
+                            <option value="">Sélectionnez des graisses</option>
+                            <optgroup label="Avocats">
+                                <option value="Avocat">Avocat</option>
+                            </optgroup>
+                            <optgroup label="Huiles végétales">
+                                <option value="Huile d'olive">Huile d'olive</option>
+                                <option value="Huile de colza">Huile de colza</option>
+                                <option value="Huile de lin">Huile de lin</option>
+                                <option value="Huile de noix">Huile de noix</option>
+                                <option value="Huile de chanvre">Huile de chanvre</option>
+                                <option value="Huile de sésame">Huile de sésame</option>
+                                <option value="Huile d'avocat">Huile d'avocat</option>
+                                <option value="Huile de cameline">Huile de cameline</option>
+                                <option value="Huile de pépins de courge">Huile de pépins de courge</option>
+                                <option value="Huile de macadamia">Huile de macadamia</option>
+                                <option value="Huile de sésame non toastée">Huile de sésame non toastée</option>
+                                <option value="Huile de pépins de raisin">Huile de pépins de raisin</option>
+                            </optgroup>
+                            <optgroup label="Noix et oléagineux">
+                                <option value="Noix de cajou">Noix de cajou</option>
+                                <option value="Noix">Noix</option>
+                                <option value="Noix du Brésil">Noix du Brésil</option>
+                                <option value="Noix de pécan">Noix de pécan</option>
+                                <option value="Noix de macadamia">Noix de macadamia</option>
+                                <option value="Amandes">Amandes</option>
+                                <option value="Noisettes">Noisettes</option>
+                                <option value="Pistaches">Pistaches</option>
+                                <option value="Pignons de pin">Pignons de pin</option>
+                                <option value="Cacahuètes">Cacahuètes</option>
+                            </optgroup>
+                            <optgroup label="Graines">
+                                <option value="Graines de chia">Graines de chia</option>
+                                <option value="Graines de lin">Graines de lin</option>
+                                <option value="Graines de chanvre">Graines de chanvre</option>
+                                <option value="Graines de courge">Graines de courge</option>
+                                <option value="Graines de tournesol">Graines de tournesol</option>
+                                <option value="Graines de sésame">Graines de sésame</option>
+                                <option value="Graines de pavot">Graines de pavot</option>
+                            </optgroup>
+                            <optgroup label="Purées et beurres">
+                                <option value="Purée d'amandes">Purée d'amandes</option>
+                                <option value="Purée de noisettes">Purée de noisettes</option>
+                                <option value="Purée de cajou">Purée de cajou</option>
+                                <option value="Beurre de cacahuète">Beurre de cacahuète</option>
+                                <option value="Beurre de noix">Beurre de noix</option>
+                                <option value="Tahini (purée de sésame)">Tahini (purée de sésame)</option>
+                                <option value="Beurre de tournesol">Beurre de tournesol</option>
+                                <option value="Beurre de pistache">Beurre de pistache</option>
+                            </optgroup>
+                            <optgroup label="Olives">
+                                <option value="Olives">Olives</option>
+                            </optgroup>
+                            <optgroup label="Poissons gras">
+                                <option value="Saumon">Saumon</option>
+                                <option value="Sardines">Sardines</option>
+                                <option value="Maquereau">Maquereau</option>
+                                <option value="Hareng">Hareng</option>
+                                <option value="Truite">Truite</option>
+                            </optgroup>
+                            <optgroup label="Autres">
+                                <option value="Noix de coco râpée">Noix de coco râpée</option>
+                                <option value="Huile de coco">Huile de coco (usage modéré)</option>
+                                <option value="Jaune d'œuf">Jaune d'œuf</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-users"></i> Nombre de portions
+                        </label>
+                        <input type="number" class="form-input" id="servings" value="2" min="1" max="8">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="generateMeal()" style="width: 100%;">
+                    <i class="fas fa-magic"></i>
+                    Créer mon repas parfait
+                </button>
+
+                <!-- Result Display -->
+                <div id="meal-result" class="recipe-result">
+                    <div class="card-header">
+                        <i class="fas fa-check-circle" style="color: var(--success-color); font-size: 2rem;"></i>
+                        <h3 class="card-title">Votre repas personnalisé</h3>
+                    </div>
+                    <div id="meal-details" class="recipe-details"></div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button class="btn btn-secondary" onclick="addToFavorites()" style="flex: 1;">
+                            <i class="fas fa-heart"></i> Ajouter aux favoris
+                        </button>
+                        <button class="btn btn-secondary" onclick="addToPlanner()" style="flex: 1;">
+                            <i class="fas fa-calendar-plus"></i> Ajouter au planning
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: My Recipe Box -->
+        <div id="recipes" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-box" style="color: var(--secondary-color); font-size: 2rem;"></i>
+                    <h2 class="card-title">My Recipe Box</h2>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-label">
+                        <i class="fas fa-link"></i> Importer une recette depuis un lien web
+                    </label>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <input type="url" class="form-input" id="recipe-url" placeholder="https://exemple.com/ma-recette" style="flex: 1;">
+                        <button class="btn btn-primary" onclick="importRecipeFromURL()" style="white-space: nowrap;">
+                            <i class="fas fa-download"></i> Importer
+                        </button>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                        Collez l'URL d'une page contenant une recette pour l'analyser et l'ajouter à votre collection
+                    </p>
+                </div>
+
+                <!-- Loading state -->
+                <div id="import-loading" style="display: none; text-align: center; padding: 2rem; background: var(--bg-primary); border-radius: var(--border-radius); margin-bottom: 2rem;">
+                    <div class="loading" style="margin: 0 auto 1rem;"></div>
+                    <p>Analyse de la recette en cours...</p>
+                </div>
+
+                <!-- Manual recipe entry form -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-header">
+                        <i class="fas fa-edit" style="color: var(--primary-color); font-size: 1.5rem;"></i>
+                        <h3 style="margin: 0; font-size: 1.25rem;">Ou ajoutez une recette manuellement</h3>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-utensils"></i> Nom de la recette
+                            </label>
+                            <input type="text" class="form-input" id="manual-recipe-name" placeholder="Ex: Curry de lentilles épicé">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-clock"></i> Temps de préparation (min)
+                            </label>
+                            <input type="number" class="form-input" id="manual-prep-time" placeholder="30">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-fire"></i> Temps de cuisson (min)
+                            </label>
+                            <input type="number" class="form-input" id="manual-cook-time" placeholder="20">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-users"></i> Portions
+                            </label>
+                            <input type="number" class="form-input" id="manual-servings" placeholder="4">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">
+                            <i class="fas fa-list"></i> Ingrédients (un par ligne)
+                        </label>
+                        <textarea class="form-input" id="manual-ingredients" rows="5" placeholder="200g de lentilles corail&#10;1 oignon&#10;2 gousses d'ail&#10;400ml de lait de coco"></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">
+                            <i class="fas fa-list-ol"></i> Instructions (étape par étape)
+                        </label>
+                        <textarea class="form-input" id="manual-instructions" rows="6" placeholder="1. Faire revenir l'oignon dans l'huile&#10;2. Ajouter l'ail et les épices&#10;3. Incorporer les lentilles et le lait de coco&#10;4. Laisser mijoter 20 minutes"></textarea>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-tag"></i> Catégorie
+                            </label>
+                            <select class="form-select" id="manual-category">
+                                <option value="">Choisir une catégorie</option>
+                                <option value="Petit-déjeuner">Petit-déjeuner</option>
+                                <option value="Déjeuner">Déjeuner</option>
+                                <option value="Dîner">Dîner</option>
+                                <option value="Collation">Collation</option>
+                                <option value="Dessert">Dessert</option>
+                                <option value="Apéritif">Apéritif</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-globe"></i> Source
+                            </label>
+                            <input type="text" class="form-input" id="manual-source" placeholder="Ex: Blog de cuisine, Livre, etc.">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="addManualRecipe()" style="width: 100%;">
+                        <i class="fas fa-plus"></i> Ajouter cette recette
+                    </button>
+                </div>
+
+                <!-- Recipe collection -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-book" style="color: var(--success-color); font-size: 1.5rem;"></i>
+                        <h3 style="margin: 0; font-size: 1.25rem;">Ma Collection de Recettes</h3>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                        <select class="form-select" id="recipe-category-filter" onchange="filterRecipes()" style="max-width: 200px;">
+                            <option value="">Toutes les catégories</option>
+                            <option value="Petit-déjeuner">Petit-déjeuner</option>
+                            <option value="Déjeuner">Déjeuner</option>
+                            <option value="Dîner">Dîner</option>
+                            <option value="Collation">Collation</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Apéritif">Apéritif</option>
+                        </select>
+                        
+                        <input type="text" class="form-input" id="recipe-search" placeholder="Rechercher..." onkeyup="filterRecipes()" style="max-width: 250px;">
+                        
+                        <button class="btn btn-secondary" onclick="clearRecipeBox()">
+                            <i class="fas fa-trash"></i> Vider la collection
+                        </button>
+                    </div>
+
+                    <div id="recipe-collection"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Weekly Planner -->
+        <div id="planner" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-calendar-alt" style="color: var(--warning-color); font-size: 2rem;"></i>
+                    <h2 class="card-title">Planning Hebdomadaire</h2>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="clearPlanner()">
+                        <i class="fas fa-trash"></i> Vider le planning
+                    </button>
+                    <button class="btn btn-primary" onclick="generateWeeklyPlan()">
+                        <i class="fas fa-magic"></i> Générer automatiquement
+                    </button>
+                </div>
+
+                <div id="weekly-planner" class="weekly-grid"></div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Favorites -->
+        <div id="favorites" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-heart" style="color: var(--accent-color); font-size: 2rem;"></i>
+                    <h2 class="card-title">Mes Repas Favoris</h2>
+                </div>
+
+                <div id="favorites-list">
+                    <div class="empty-state">
+                        <i class="fas fa-heart-broken"></i>
+                        <h3>Aucun favori enregistré</h3>
+                        <p>Créez des repas et ajoutez-les à vos favoris pour les retrouver facilement !</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Shopping List -->
+        <div id="shopping" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-shopping-basket" style="color: var(--secondary-color); font-size: 2rem;"></i>
+                    <h2 class="card-title">Liste de Courses</h2>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="clearShoppingList()">
+                        <i class="fas fa-trash"></i> Vider la liste
+                    </button>
+                    <button class="btn btn-primary" onclick="generateShoppingList()">
+                        <i class="fas fa-list"></i> Générer automatiquement
+                    </button>
+                </div>
+
+                <div id="shopping-list">
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Liste de courses vide</h3>
+                        <p>Ajoutez des repas à votre planning pour générer automatiquement votre liste de courses.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // ============================================================================
+        // STATE MANAGEMENT
+        // ============================================================================
+        let appState = {
+            currentMeal: null,
+            selectedProteins: [],
+            selectedVegetables: [],
+            favorites: JSON.parse(localStorage.getItem('planvert_favorites') || '[]'),
+            weeklyPlan: JSON.parse(localStorage.getItem('planvert_plan') || '{}'),
+            shoppingList: JSON.parse(localStorage.getItem('planvert_shopping') || '[]'),
+            recipeBox: JSON.parse(localStorage.getItem('planvert_recipes') || '[]')
+        };
+
+        // ============================================================================
+        // INITIALIZATION
+        // ============================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTabs();
+            initializeWeeklyPlanner();
+            updateCounters();
+            displayRecipeCollection();
+            displayFavorites();
+            displayShoppingList();
+            console.log('✅ PlanVert initialisé avec succès !');
+        });
+
+        // ============================================================================
+        // TAB MANAGEMENT
+        // ============================================================================
+        function initializeTabs() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    showTab(targetTab);
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function showTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show target content
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // ============================================================================
+        // MULTI-SELECT FUNCTIONALITY
+        // ============================================================================
+        function toggleDropdown(type) {
+            const dropdown = document.getElementById(`${type}-dropdown`);
+            dropdown.classList.toggle('show');
+            
+            // Close other dropdowns
+            document.querySelectorAll('.multi-select-dropdown').forEach(dd => {
+                if (dd !== dropdown) {
+                    dd.classList.remove('show');
+                }
+            });
+        }
+
+        function selectOption(type, value) {
+            const checkbox = document.querySelector(`#${type}-dropdown input[value="${value}"]`);
+            checkbox.checked = !checkbox.checked;
+            
+            if (type === 'protein') {
+                if (checkbox.checked) {
+                    appState.selectedProteins.push(value);
+                } else {
+                    appState.selectedProteins = appState.selectedProteins.filter(p => p !== value);
+                }
+                updateSelectedDisplay('protein', appState.selectedProteins);
+            } else if (type === 'vegetables') {
+                if (checkbox.checked) {
+                    appState.selectedVegetables.push(value);
+                } else {
+                    appState.selectedVegetables = appState.selectedVegetables.filter(v => v !== value);
+                }
+                updateSelectedDisplay('vegetables', appState.selectedVegetables);
+            }
+        }
+
+        function updateSelectedDisplay(type, selectedItems) {
+            const display = document.getElementById(`${type}-display`);
+            const container = document.getElementById(`${type}-selected`);
+            
+            if (selectedItems.length === 0) {
+                display.textContent = type === 'protein' ? 'Choisissez vos protéines' : 'Sélectionnez vos légumes';
+                container.innerHTML = '';
+            } else if (selectedItems.length === 1) {
+                display.textContent = selectedItems[0];
+            } else {
+                display.textContent = `${selectedItems.length} éléments sélectionnés`;
+            }
+            
+            container.innerHTML = selectedItems.map(item => `
+                <div class="selected-item">
+                    ${item}
+                    <span class="remove-item" onclick="removeSelectedItem('${type}', '${item}')">&times;</span>
+                </div>
+            `).join('');
+        }
+
+        function removeSelectedItem(type, item) {
+            if (type === 'protein') {
+                appState.selectedProteins = appState.selectedProteins.filter(p => p !== item);
+                updateSelectedDisplay('protein', appState.selectedProteins);
+            } else if (type === 'vegetables') {
+                appState.selectedVegetables = appState.selectedVegetables.filter(v => v !== item);
+                updateSelectedDisplay('vegetables', appState.selectedVegetables);
+            }
+            
+            // Uncheck the checkbox
+            const checkbox = document.querySelector(`#${type}-dropdown input[value="${item}"]`);
+            if (checkbox) checkbox.checked = false;
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.multi-select')) {
+                document.querySelectorAll('.multi-select-dropdown').forEach(dd => {
+                    dd.classList.remove('show');
+                });
+            }
+        });
+
+        // ============================================================================
+        // MEAL GENERATION
+        // ============================================================================
+        function generateMeal() {
+            const proteins = appState.selectedProteins.join(', ') || 'Aucune';
+            const dishType = document.getElementById('dish-type').value || 'Non spécifié';
+            const vegetables = appState.selectedVegetables.join(', ') || 'Aucun';
+            const carbs = document.getElementById('carbs').value || 'Non spécifié';
+            const fats = document.getElementById('fats').value || 'Non spécifié';
+            const servings = document.getElementById('servings').value || '2';
+
+            if (appState.selectedProteins.length === 0 || !dishType || appState.selectedVegetables.length === 0) {
+                showNotification('Veuillez remplir au moins les protéines, le type de plat et les légumes !', 'warning');
+                return;
+            }
+
+            const meal = {
+                id: Date.now(),
+                proteins,
+                dishType,
+                vegetables,
+                carbs,
+                fats,
+                servings,
+                createdAt: new Date().toLocaleDateString('fr-FR')
+            };
+
+            appState.currentMeal = meal;
+            displayMealResult(meal);
+            showNotification('Repas créé avec succès !', 'success');
+        }
+
+        function displayMealResult(meal) {
+            const resultDiv = document.getElementById('meal-result');
+            const detailsDiv = document.getElementById('meal-details');
+
+            detailsDiv.innerHTML = `
+                <div class="recipe-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <div>
+                        <strong>Protéines :</strong> ${meal.proteins}
+                    </div>
+                </div>
+                <div class="recipe-item">
+                    <i class="fas fa-utensils"></i>
+                    <div>
+                        <strong>Type de plat :</strong> ${meal.dishType}
+                    </div>
+                </div>
+                <div class="recipe-item">
+                    <i class="fas fa-carrot"></i>
+                    <div>
+                        <strong>Légumes :</strong> ${meal.vegetables}
+                    </div>
+                </div>
+                <div class="recipe-item">
+                    <i class="fas fa-bread-slice"></i>
+                    <div>
+                        <strong>Glucides :</strong> ${meal.carbs}
+                    </div>
+                </div>
+                <div class="recipe-item">
+                    <i class="fas fa-tint"></i>
+                    <div>
+                        <strong>Graisses saines :</strong> ${meal.fats}
+                    </div>
+                </div>
+                <div class="recipe-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <strong>Portions :</strong> ${meal.servings}
+                    </div>
+                </div>
+            `;
+
+            resultDiv.classList.add('show');
+        }
+
+        function generateRandomMeal() {
+            // Reset selections
+            appState.selectedProteins = [];
+            appState.selectedVegetables = [];
+            
+            const proteinOptions = ['Tofu', 'Lentilles', 'Pois chiches', 'Quinoa', 'Œufs'];
+            const dishOptions = ['Bowl', 'Salade', 'Curry', 'Pâtes', 'Wrap'];
+            const vegetableOptions = ['Épinards', 'Brocoli', 'Courgettes', 'Poivrons', 'Carottes'];
+            const carbOptions = ['Riz complet', 'Quinoa', 'Pâtes complètes', 'Patate douce'];
+            const fatOptions = ['Avocat', 'Huile d\'olive', 'Noix', 'Tahini'];
+
+            // Random selections
+            const randomProteins = getRandomItems(proteinOptions, 1, 2);
+            const randomVegetables = getRandomItems(vegetableOptions, 2, 3);
+            
+            appState.selectedProteins = randomProteins;
+            appState.selectedVegetables = randomVegetables;
+            
+            // Update form
+            document.getElementById('dish-type').value = getRandomItem(dishOptions);
+            document.getElementById('carbs').value = getRandomItem(carbOptions);
+            document.getElementById('fats').value = getRandomItem(fatOptions);
+            document.getElementById('servings').value = Math.floor(Math.random() * 4) + 2;
+            
+            // Update displays
+            updateSelectedDisplay('protein', appState.selectedProteins);
+            updateSelectedDisplay('vegetables', appState.selectedVegetables);
+            
+            // Update checkboxes
+            updateCheckboxes();
+            
+            // Generate meal
+            generateMeal();
+            
+            // Show generator tab
+            showTab('generator');
+            document.querySelector('[data-tab="generator"]').classList.add('active');
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                if (tab.getAttribute('data-tab') !== 'generator') {
+                    tab.classList.remove('active');
+                }
+            });
+        }
+
+        function updateCheckboxes() {
+            // Reset all checkboxes
+            document.querySelectorAll('.multi-select-dropdown input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            
+            // Check selected items
+            appState.selectedProteins.forEach(protein => {
+                const checkbox = document.querySelector(`#protein-dropdown input[value="${protein}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+            
+            appState.selectedVegetables.forEach(vegetable => {
+                const checkbox = document.querySelector(`#vegetables-dropdown input[value="${vegetable}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+
+        function getRandomItems(array, min, max) {
+            const count = Math.floor(Math.random() * (max - min + 1)) + min;
+            const shuffled = [...array].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        // ============================================================================
+        // MY RECIPE BOX
+        // ============================================================================
+        function importRecipeFromURL() {
+            const url = document.getElementById('recipe-url').value.trim();
+            
+            if (!url) {
+                showNotification('Veuillez entrer une URL valide !', 'warning');
+                return;
+            }
+            
+            if (!isValidURL(url)) {
+                showNotification('Format d\'URL invalide !', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('import-loading').style.display = 'block';
+            
+            // Simulate API call for recipe extraction
+            setTimeout(() => {
+                try {
+                    // In a real implementation, this would call an AI service
+                    // For demo purposes, we'll create a sample recipe
+                    const extractedRecipe = extractRecipeDemo(url);
+                    
+                    if (extractedRecipe) {
+                        addRecipeToBox(extractedRecipe);
+                        document.getElementById('recipe-url').value = '';
+                        showNotification('Recette importée avec succès !', 'success');
+                    } else {
+                        showNotification('Impossible d\'extraire la recette depuis cette URL', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Erreur lors de l\'importation', 'error');
+                } finally {
+                    document.getElementById('import-loading').style.display = 'none';
+                }
+            }, 2000);
+        }
+        
+        function extractRecipeDemo(url) {
+            // Demo extraction - in real implementation, this would use the AI prompt
+            const recipes = [
+                {
+                    name: "Curry de Lentilles Épicé",
+                    prepTime: 15,
+                    cookTime: 25,
+                    servings: 4,
+                    ingredients: [
+                        "200g de lentilles corail",
+                        "1 oignon, émincé",
+                        "2 gousses d'ail, hachées",
+                        "1 cuillère à soupe de gingembre frais, râpé",
+                        "400ml de lait de coco",
+                        "1 cuillère à soupe de curry en poudre",
+                        "1 cuillère à café de curcuma",
+                        "Sel et poivre au goût"
+                    ],
+                    instructions: [
+                        "Rincer les lentilles corail à l'eau froide",
+                        "Faire chauffer l'huile dans une casserole et faire revenir l'oignon 5 minutes",
+                        "Ajouter l'ail, le gingembre et les épices, cuire 1 minute",
+                        "Incorporer les lentilles et le lait de coco",
+                        "Porter à ébullition puis réduire le feu et laisser mijoter 20 minutes",
+                        "Assaisonner et servir chaud"
+                    ],
+                    category: "Déjeuner",
+                    source: url,
+                    imageUrl: null
+                },
+                {
+                    name: "Salade de Quinoa Méditerranéenne",
+                    prepTime: 20,
+                    cookTime: 15,
+                    servings: 3,
+                    ingredients: [
+                        "150g de quinoa",
+                        "2 tomates, dés",
+                        "1 concombre, dés",
+                        "100g d'olives noires",
+                        "100g de feta émiettée",
+                        "1/4 de tasse d'huile d'olive",
+                        "2 cuillères à soupe de jus de citron",
+                        "Herbes fraîches (menthe, persil)"
+                    ],
+                    instructions: [
+                        "Cuire le quinoa selon les instructions du paquet",
+                        "Laisser refroidir complètement",
+                        "Mélanger tous les légumes dans un grand bol",
+                        "Préparer la vinaigrette avec l'huile d'olive et le citron",
+                        "Assembler la salade et mélanger délicatement",
+                        "Laisser reposer 30 minutes avant de servir"
+                    ],
+                    category: "Déjeuner",
+                    source: url,
+                    imageUrl: null
+                }
+            ];
+            
+            return recipes[Math.floor(Math.random() * recipes.length)];
+        }
+        
+        function addManualRecipe() {
+            const name = document.getElementById('manual-recipe-name').value.trim();
+            const prepTime = parseInt(document.getElementById('manual-prep-time').value) || 0;
+            const cookTime = parseInt(document.getElementById('manual-cook-time').value) || 0;
+            const servings = parseInt(document.getElementById('manual-servings').value) || 1;
+            const ingredients = document.getElementById('manual-ingredients').value.trim();
+            const instructions = document.getElementById('manual-instructions').value.trim();
+            const category = document.getElementById('manual-category').value;
+            const source = document.getElementById('manual-source').value.trim();
+            
+            if (!name || !ingredients || !instructions) {
+                showNotification('Veuillez remplir au moins le nom, les ingrédients et les instructions !', 'warning');
+                return;
+            }
+            
+            const recipe = {
+                name,
+                prepTime,
+                cookTime,
+                servings,
+                ingredients: ingredients.split('\n').filter(line => line.trim()),
+                instructions: instructions.split('\n').filter(line => line.trim()),
+                category: category || 'Non catégorisé',
+                source: source || 'Recette personnelle',
+                imageUrl: null
+            };
+            
+            addRecipeToBox(recipe);
+            clearManualForm();
+            showNotification('Recette ajoutée avec succès !', 'success');
+        }
+        
+        function addRecipeToBox(recipe) {
+            const recipeWithId = {
+                ...recipe,
+                id: Date.now(),
+                dateAdded: new Date().toLocaleDateString('fr-FR')
+            };
+            
+            appState.recipeBox.push(recipeWithId);
+            localStorage.setItem('planvert_recipes', JSON.stringify(appState.recipeBox));
+            displayRecipeCollection();
+        }
+        
+        function clearManualForm() {
+            document.getElementById('manual-recipe-name').value = '';
+            document.getElementById('manual-prep-time').value = '';
+            document.getElementById('manual-cook-time').value = '';
+            document.getElementById('manual-servings').value = '';
+            document.getElementById('manual-ingredients').value = '';
+            document.getElementById('manual-instructions').value = '';
+            document.getElementById('manual-category').value = '';
+            document.getElementById('manual-source').value = '';
+        }
+        
+        function displayRecipeCollection() {
+            const container = document.getElementById('recipe-collection');
+            const categoryFilter = document.getElementById('recipe-category-filter').value;
+            const searchTerm = document.getElementById('recipe-search').value.toLowerCase();
+            
+            let filteredRecipes = appState.recipeBox;
+            
+            if (categoryFilter) {
+                filteredRecipes = filteredRecipes.filter(recipe => recipe.category === categoryFilter);
+            }
+            
+            if (searchTerm) {
+                filteredRecipes = filteredRecipes.filter(recipe => 
+                    recipe.name.toLowerCase().includes(searchTerm) ||
+                    recipe.ingredients.some(ing => ing.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            if (filteredRecipes.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-book-open"></i>
+                        <h3>Aucune recette trouvée</h3>
+                        <p>${appState.recipeBox.length === 0 ? 'Commencez par importer ou ajouter des recettes !' : 'Essayez d\'ajuster vos filtres de recherche.'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="recipe-cards">
+                    ${filteredRecipes.map(recipe => `
+                        <div class="recipe-card">
+                            <div class="recipe-card-header">
+                                <i class="fas fa-utensils"></i>
+                                ${recipe.name}
+                                <div style="margin-left: auto; display: flex; gap: 0.5rem;">
+                                    <button class="btn btn-secondary" onclick="viewRecipe(${recipe.id})" style="padding: 0.5rem;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="removeRecipe(${recipe.id})" style="padding: 0.5rem;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="recipe-card-body">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                    <div style="text-align: center; background: var(--bg-primary); padding: 0.75rem; border-radius: var(--border-radius);">
+                                        <i class="fas fa-clock" style="color: var(--primary-color);"></i>
+                                        <div style="font-size: 0.9rem; margin-top: 0.25rem;">${recipe.prepTime + recipe.cookTime} min</div>
+                                    </div>
+                                    <div style="text-align: center; background: var(--bg-primary); padding: 0.75rem; border-radius: var(--border-radius);">
+                                        <i class="fas fa-users" style="color: var(--primary-color);"></i>
+                                        <div style="font-size: 0.9rem; margin-top: 0.25rem;">${recipe.servings} pers.</div>
+                                    </div>
+                                    <div style="text-align: center; background: var(--bg-primary); padding: 0.75rem; border-radius: var(--border-radius);">
+                                        <i class="fas fa-tag" style="color: var(--primary-color);"></i>
+                                        <div style="font-size: 0.9rem; margin-top: 0.25rem;">${recipe.category}</div>
+                                    </div>
+                                </div>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                    <strong>Ingrédients:</strong> ${recipe.ingredients.slice(0, 3).join(', ')}${recipe.ingredients.length > 3 ? '...' : ''}
+                                </p>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                                    <i class="fas fa-calendar"></i> Ajouté le ${recipe.dateAdded}
+                                </p>
+                                <button class="btn btn-primary" onclick="addRecipeToFavorites('${recipe.name}', '${recipe.category}')" style="width: 100%; margin-top: 1rem;">
+                                    <i class="fas fa-heart"></i> Ajouter aux favoris
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        function viewRecipe(recipeId) {
+            const recipe = appState.recipeBox.find(r => r.id === recipeId);
+            if (!recipe) return;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                background: rgba(0,0,0,0.8); z-index: 10000; 
+                display: flex; align-items: center; justify-content: center; padding: 2rem;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: var(--border-radius); max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;">
+                    <div style="padding: 2rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h2 style="margin: 0; color: var(--primary-color);">${recipe.name}</h2>
+                            <button onclick="this.closest('div').parentElement.parentElement.remove()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                            <div style="text-align: center; background: var(--bg-primary); padding: 1rem; border-radius: var(--border-radius);">
+                                <i class="fas fa-prep-time" style="color: var(--primary-color);"></i>
+                                <div><strong>Préparation:</strong> ${recipe.prepTime} min</div>
+                            </div>
+                            <div style="text-align: center; background: var(--bg-primary); padding: 1rem; border-radius: var(--border-radius);">
+                                <i class="fas fa-fire" style="color: var(--accent-color);"></i>
+                                <div><strong>Cuisson:</strong> ${recipe.cookTime} min</div>
+                            </div>
+                            <div style="text-align: center; background: var(--bg-primary); padding: 1rem; border-radius: var(--border-radius);">
+                                <i class="fas fa-users" style="color: var(--secondary-color);"></i>
+                                <div><strong>Portions:</strong> ${recipe.servings}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div>
+                                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                                    <i class="fas fa-list"></i> Ingrédients
+                                </h3>
+                                <ul style="list-style: none; padding: 0;">
+                                    ${recipe.ingredients.map(ing => `<li style="padding: 0.5rem; margin: 0.5rem 0; background: var(--bg-primary); border-radius: var(--border-radius);">• ${ing}</li>`).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                                    <i class="fas fa-list-ol"></i> Instructions
+                                </h3>
+                                <ol style="padding-left: 1rem;">
+                                    ${recipe.instructions.map(inst => `<li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">${inst}</li>`).join('')}
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color); color: var(--text-secondary);">
+                            <p><strong>Catégorie:</strong> ${recipe.category}</p>
+                            <p><strong>Source:</strong> ${recipe.source}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+        }
+        
+        function removeRecipe(recipeId) {
+            if (confirm('Supprimer cette recette de votre collection ?')) {
+                appState.recipeBox = appState.recipeBox.filter(recipe => recipe.id !== recipeId);
+                localStorage.setItem('planvert_recipes', JSON.stringify(appState.recipeBox));
+                displayRecipeCollection();
+                showNotification('Recette supprimée', 'success');
+            }
+        }
+        
+        function filterRecipes() {
+            displayRecipeCollection();
+        }
+        
+        function clearRecipeBox() {
+            if (confirm('Vider toute votre collection de recettes ?')) {
+                appState.recipeBox = [];
+                localStorage.setItem('planvert_recipes', JSON.stringify(appState.recipeBox));
+                displayRecipeCollection();
+                showNotification('Collection vidée', 'success');
+            }
+        }
+        
+        function isValidURL(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function addRecipeToFavorites(recipeName, category) {
+            const favorite = {
+                id: Date.now(),
+                name: recipeName,
+                category: category,
+                type: 'recipe',
+                createdAt: new Date().toLocaleDateString('fr-FR')
+            };
+            
+            appState.favorites.push(favorite);
+            localStorage.setItem('planvert_favorites', JSON.stringify(appState.favorites));
+            updateCounters();
+            displayFavorites();
+            showNotification(`"${recipeName}" ajouté aux favoris !`, 'success');
+        }
+
+        // ============================================================================
+        // FAVORITES MANAGEMENT
+        // ============================================================================
+        function addToFavorites() {
+            if (!appState.currentMeal) {
+                showNotification('Aucun repas à ajouter aux favoris !', 'warning');
+                return;
+            }
+            
+            const favorite = {
+                ...appState.currentMeal,
+                name: `${appState.currentMeal.dishType} - ${appState.currentMeal.proteins}`,
+                type: 'custom'
+            };
+            
+            appState.favorites.push(favorite);
+            localStorage.setItem('planvert_favorites', JSON.stringify(appState.favorites));
+            updateCounters();
+            displayFavorites();
+            showNotification('Repas ajouté aux favoris !', 'success');
+        }
+
+        function displayFavorites() {
+            const container = document.getElementById('favorites-list');
+            
+            if (appState.favorites.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-heart-broken"></i>
+                        <h3>Aucun favori enregistré</h3>
+                        <p>Créez des repas et ajoutez-les à vos favoris pour les retrouver facilement !</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="recipe-cards">
+                    ${appState.favorites.map(fav => `
+                        <div class="recipe-card">
+                            <div class="recipe-card-header">
+                                <i class="fas fa-heart"></i>
+                                ${fav.name}
+                            </div>
+                            <div class="recipe-card-body">
+                                ${fav.type === 'custom' ? `
+                                    <p><strong>Protéines:</strong> ${fav.proteins}</p>
+                                    <p><strong>Type:</strong> ${fav.dishType}</p>
+                                    <p><strong>Légumes:</strong> ${fav.vegetables}</p>
+                                    <p><strong>Portions:</strong> ${fav.servings}</p>
+                                ` : `
+                                    <p><strong>Catégorie:</strong> ${fav.category || fav.protein || 'Non spécifiée'}</p>
+                                    <p><strong>Type:</strong> Recette de la collection</p>
+                                `}
+                                <p style="color: var(--text-secondary); margin-top: 1rem;">
+                                    <i class="fas fa-calendar"></i> ${fav.createdAt}
+                                </p>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button class="btn btn-secondary" onclick="removeFavorite(${fav.id})" style="flex: 1;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    ${fav.type === 'custom' ? `
+                                        <button class="btn btn-primary" onclick="useFavorite(${fav.id})" style="flex: 2;">
+                                            <i class="fas fa-utensils"></i> Réutiliser
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function removeFavorite(id) {
+            if (confirm('Supprimer ce favori ?')) {
+                appState.favorites = appState.favorites.filter(fav => fav.id !== id);
+                localStorage.setItem('planvert_favorites', JSON.stringify(appState.favorites));
+                updateCounters();
+                displayFavorites();
+                showNotification('Favori supprimé', 'success');
+            }
+        }
+
+        function useFavorite(id) {
+            const favorite = appState.favorites.find(fav => fav.id === id);
+            if (!favorite) return;
+            
+            // Reset current selections
+            appState.selectedProteins = favorite.proteins.split(', ');
+            appState.selectedVegetables = favorite.vegetables.split(', ');
+            
+            // Update form
+            document.getElementById('dish-type').value = favorite.dishType;
+            document.getElementById('carbs').value = favorite.carbs;
+            document.getElementById('fats').value = favorite.fats;
+            document.getElementById('servings').value = favorite.servings;
+            
+            // Update displays
+            updateSelectedDisplay('protein', appState.selectedProteins);
+            updateSelectedDisplay('vegetables', appState.selectedVegetables);
+            updateCheckboxes();
+            
+            // Switch to generator tab
+            showTab('generator');
+            document.querySelector('[data-tab="generator"]').classList.add('active');
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                if (tab.getAttribute('data-tab') !== 'generator') {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            showNotification('Favori chargé dans le générateur !', 'success');
+        }
+
+        // ============================================================================
+        // WEEKLY PLANNER
+        // ============================================================================
+        function initializeWeeklyPlanner() {
+            const container = document.getElementById('weekly-planner');
+            const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+            const meals = ['Petit-déjeuner', 'Déjeuner', 'Dîner'];
+            
+            let html = '';
+            days.forEach(day => {
+                html += `
+                    <div class="day-card">
+                        <div class="day-header">${day}</div>
+                        ${meals.map(meal => `
+                            <div class="meal-slot" data-day="${day}" data-meal="${meal}" onclick="addMealToPlanner('${day}', '${meal}')">
+                                <div style="text-align: center;">
+                                    <i class="fas fa-plus"></i>
+                                    <div>${meal}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            displayWeeklyPlan();
+        }
+
+        function addToPlanner() {
+            if (!appState.currentMeal) {
+                showNotification('Créez d\'abord un repas !', 'warning');
+                return;
+            }
+            
+            const day = prompt('Quel jour ? (Lundi, Mardi, etc.)');
+            const meal = prompt('Quel repas ? (Petit-déjeuner, Déjeuner, Dîner)');
+            
+            if (day && meal) {
+                addMealToPlanner(day, meal);
+            }
+        }
+
+        function addMealToPlanner(day, meal) {
+            if (!appState.currentMeal) {
+                showNotification('Créez d\'abord un repas !', 'warning');
+                return;
+            }
+            
+            if (!appState.weeklyPlan[day]) {
+                appState.weeklyPlan[day] = {};
+            }
+            
+            appState.weeklyPlan[day][meal] = { ...appState.currentMeal };
+            localStorage.setItem('planvert_plan', JSON.stringify(appState.weeklyPlan));
+            displayWeeklyPlan();
+            showNotification(`${meal} ajouté au ${day} !`, 'success');
+        }
+
+        function displayWeeklyPlan() {
+            Object.entries(appState.weeklyPlan).forEach(([day, meals]) => {
+                Object.entries(meals).forEach(([mealType, mealData]) => {
+                    const slot = document.querySelector(`[data-day="${day}"][data-meal="${mealType}"]`);
+                    if (slot && mealData) {
+                        slot.classList.add('filled');
+                        slot.innerHTML = `
+                            <div style="padding: 0.5rem;">
+                                <strong>${mealData.dishType}</strong>
+                                <div style="font-size: 0.9rem; margin-top: 0.25rem;">
+                                    ${mealData.proteins}
+                                </div>
+                                <button onclick="removeMealFromPlanner('${day}', '${mealType}')" 
+                                        style="margin-top: 0.5rem; background: rgba(255,255,255,0.2); border: none; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                });
+            });
+        }
+
+        function removeMealFromPlanner(day, meal) {
+            if (appState.weeklyPlan[day] && appState.weeklyPlan[day][meal]) {
+                delete appState.weeklyPlan[day][meal];
+                if (Object.keys(appState.weeklyPlan[day]).length === 0) {
+                    delete appState.weeklyPlan[day];
+                }
+                localStorage.setItem('planvert_plan', JSON.stringify(appState.weeklyPlan));
+                initializeWeeklyPlanner();
+                showNotification('Repas retiré du planning', 'success');
+            }
+        }
+
+        function generateWeeklyPlan() {
+            const proteins = ['Tofu', 'Lentilles', 'Pois chiches', 'Quinoa', 'Œufs', 'Saumon', 'Poulet'];
+            const dishTypes = ['Bowl', 'Salade', 'Curry', 'Pâtes', 'Wrap', 'Soupe'];
+            const vegetables = ['Épinards', 'Brocoli', 'Courgettes', 'Poivrons', 'Carottes', 'Champignons'];
+            const carbs = ['Riz complet', 'Quinoa', 'Pâtes complètes', 'Patate douce'];
+            const fats = ['Avocat', 'Huile d\'olive', 'Noix', 'Tahini'];
+            
+            const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+            const meals = ['Petit-déjeuner', 'Déjeuner', 'Dîner'];
+            
+            appState.weeklyPlan = {};
+            
+            days.forEach(day => {
+                appState.weeklyPlan[day] = {};
+                meals.forEach(mealType => {
+                    appState.weeklyPlan[day][mealType] = {
+                        id: Date.now() + Math.random(),
+                        proteins: getRandomItem(proteins),
+                        dishType: getRandomItem(dishTypes),
+                        vegetables: getRandomItems(vegetables, 1, 2).join(', '),
+                        carbs: getRandomItem(carbs),
+                        fats: getRandomItem(fats),
+                        servings: '2',
+                        createdAt: new Date().toLocaleDateString('fr-FR')
+                    };
+                });
+            });
+            
+            localStorage.setItem('planvert_plan', JSON.stringify(appState.weeklyPlan));
+            initializeWeeklyPlanner();
+            showNotification('Planning hebdomadaire généré !', 'success');
+        }
+
+        function clearPlanner() {
+            if (confirm('Vider tout le planning ?')) {
+                appState.weeklyPlan = {};
+                localStorage.setItem('planvert_plan', JSON.stringify(appState.weeklyPlan));
+                initializeWeeklyPlanner();
+                showNotification('Planning vidé', 'success');
+            }
+        }
+
+        // ============================================================================
+        // SHOPPING LIST
+        // ============================================================================
+        function generateShoppingList() {
+            const ingredients = new Set();
+            
+            // Extract ingredients from weekly plan
+            Object.values(appState.weeklyPlan).forEach(day => {
+                Object.values(day).forEach(meal => {
+                    if (meal.proteins && meal.proteins !== 'Aucune') {
+                        meal.proteins.split(', ').forEach(p => ingredients.add(p.trim()));
+                    }
+                    if (meal.vegetables && meal.vegetables !== 'Aucun') {
+                        meal.vegetables.split(', ').forEach(v => ingredients.add(v.trim()));
+                    }
+                    if (meal.carbs && meal.carbs !== 'Non spécifié') {
+                        ingredients.add(meal.carbs);
+                    }
+                    if (meal.fats && meal.fats !== 'Non spécifié') {
+                        ingredients.add(meal.fats);
+                    }
+                });
+            });
+            
+            // Add essentials
+            const essentials = ['Sel', 'Poivre', 'Huile d\'olive', 'Ail', 'Oignon', 'Citron'];
+            essentials.forEach(item => ingredients.add(item));
+            
+            appState.shoppingList = Array.from(ingredients).map(ingredient => ({
+                id: Date.now() + Math.random(),
+                name: ingredient,
+                checked: false
+            }));
+            
+            localStorage.setItem('planvert_shopping', JSON.stringify(appState.shoppingList));
+            updateCounters();
+            displayShoppingList();
+            showNotification('Liste de courses générée !', 'success');
+        }
+
+        function displayShoppingList() {
+            const container = document.getElementById('shopping-list');
+            
+            if (appState.shoppingList.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Liste de courses vide</h3>
+                        <p>Ajoutez des repas à votre planning pour générer automatiquement votre liste de courses.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = appState.shoppingList.map(item => `
+                <div class="shopping-item ${item.checked ? 'checked' : ''}">
+                    <input type="checkbox" ${item.checked ? 'checked' : ''} 
+                           onchange="toggleShoppingItem(${item.id})">
+                    <span>${item.name}</span>
+                    <button class="btn btn-secondary" onclick="removeShoppingItem(${item.id})" 
+                            style="margin-left: auto; padding: 0.5rem;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function toggleShoppingItem(id) {
+            const item = appState.shoppingList.find(item => item.id === id);
+            if (item) {
+                item.checked = !item.checked;
+                localStorage.setItem('planvert_shopping', JSON.stringify(appState.shoppingList));
+                displayShoppingList();
+            }
+        }
+
+        function removeShoppingItem(id) {
+            appState.shoppingList = appState.shoppingList.filter(item => item.id !== id);
+            localStorage.setItem('planvert_shopping', JSON.stringify(appState.shoppingList));
+            updateCounters();
+            displayShoppingList();
+        }
+
+        function clearShoppingList() {
+            if (confirm('Vider la liste de courses ?')) {
+                appState.shoppingList = [];
+                localStorage.setItem('planvert_shopping', JSON.stringify(appState.shoppingList));
+                updateCounters();
+                displayShoppingList();
+                showNotification('Liste de courses vidée', 'success');
+            }
+        }
+
+        // ============================================================================
+        // UTILITY FUNCTIONS
+        // ============================================================================
+        function updateCounters() {
+            document.getElementById('favCount').textContent = appState.favorites.length;
+            document.getElementById('shopCount').textContent = appState.shoppingList.length;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        function showNutritionalTips() {
+            const tips = [
+                "🥗 Variez les couleurs dans votre assiette pour un maximum de nutriments",
+                "💧 Buvez au moins 8 verres d'eau par jour",
+                "🌱 Privilégiez les aliments complets aux aliments raffinés",
+                "🥜 Incluez des graines et noix pour les bons gras",
+                "🌿 Utilisez les herbes fraîches pour réduire le sel",
+                "⏰ Mangez à heures régulières pour stabiliser votre métabolisme",
+                "🍎 Préparez vos collations saines à l'avance",
+                "🥕 Cuisinez plus souvent à la maison pour contrôler les ingrédients"
+            ];
+            
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            showNotification(randomTip, 'success');
+        }
+
+        // ============================================================================
+        // WEB SCRAPING EXAMPLE (to be removed in production)
+        // ============================================================================
+        const cheerio = require('cheerio');
+        const axios = require('axios');
+
+        axios.get('https://example.com/recipe')
+            .then(response => {
+                const $ = cheerio.load(response.data);
+                const title = $('h1.recipe-title').text();
+                console.log('Titre de la recette:', title);
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+</body>
+</html>
